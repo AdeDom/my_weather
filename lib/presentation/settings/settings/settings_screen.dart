@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_weather/data/models/enum/app_temperature.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
-import 'package:my_weather/presentation/settings/settings/providers/settings_providers.dart';
+import 'package:my_weather/presentation/settings/settings/providers/settings_controller.dart';
 import 'package:my_weather/presentation/settings/temperature/temperature_page.dart';
 import 'package:my_weather/routing/app_router.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
@@ -75,7 +76,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   Widget _buildUnitsWidget() {
-    final isTemperature = ref.watch(isTemperatureCelsiusProvider);
+    final temperature = ref.watch(getAppTemperatureProvider);
+    final isTemperatureCelsius = temperature == AppTemperature.celsius;
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
       child: Column(
@@ -99,7 +101,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 children: [
                   _buildUnitItemWidget(
                     'Temperature',
-                    isTemperature ? 'Celsius (°C)' : 'Fahrenheit (°F)',
+                    isTemperatureCelsius ? 'Celsius (°C)' : 'Fahrenheit (°F)',
                     onTap: _showTemperatureBottomSheet,
                   ),
                 ],
@@ -164,8 +166,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _onChangeTheme(bool value) {
-    ref.read(setDarkModeProvider(value));
-    ref.invalidate(isDarkModeProvider);
+    ref.read(settingsControllerProvider.notifier).onChangeTheme(value);
   }
 
   void _showTemperatureBottomSheet() {

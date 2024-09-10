@@ -1,46 +1,36 @@
 import 'package:my_weather/data/data_source/local/open_weather/open_weather_local_data_source.dart';
 import 'package:my_weather/data/data_source/remote/open_weather/open_weather_remote_data_source.dart';
-import 'package:my_weather/data/models/entity/geocoding/geocoding_entity.dart';
+import 'package:my_weather/data/models/entity/geographical_coordinates/geographical_coordinates_entity.dart';
+import 'package:my_weather/data/models/response/current_weather/current_weather_response.dart';
+import 'package:my_weather/data/models/response/forecast/forecast_response.dart';
+import 'package:my_weather/data/models/response/geographical_coordinates/geographical_coordinates_response.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
-import 'package:my_weather/domain/models/forecast/forecast_model.dart';
-import 'package:my_weather/domain/models/home/current_weather_model.dart';
-import 'package:my_weather/domain/models/home/geocoding_model.dart';
-import 'package:my_weather/domain/models/home/home_forecast_model.dart';
-import 'package:my_weather/domain/models/manage_cities/add_city_model.dart';
-import 'package:my_weather/domain/models/manage_cities/manage_cities_model.dart';
-import 'package:my_weather/utils/extensions/mapper_extensions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'open_weather_repository.g.dart';
 
 abstract class OpenWeatherRepository {
-  List<GeocodingModel> getGeocodingAll();
+  Future<List<GeographicalCoordinatesEntity>> getGeographicalCoordinatesAll();
 
-  List<ManageCitiesModel> getManageCities();
+  void addGeographicalCoordinates(GeographicalCoordinatesEntity entity);
 
-  void addGeocoding(GeocodingEntity geocoding);
+  void removeGeographicalCoordinates(GeographicalCoordinatesEntity entity);
 
-  void removeGeocoding(GeocodingEntity geocoding);
-
-  Future<CurrentWeatherModel> fetchCurrentWeather(
+  Future<CurrentWeatherResponse> fetchCurrentWeather(
     double? lat,
     double? lon,
     String units,
   );
 
-  Future<List<HomeForecastModel>> fetchHomeForecast(
+  Future<List<Forecast>> fetchForecast(
     double? lat,
     double? lon,
     String units,
   );
 
-  Future<List<ForecastModel>> fetchForecast(
-    double? lat,
-    double? lon,
-    String units,
+  Future<List<GeographicalCoordinatesResponse>> fetchGeographicalCoordinates(
+    String search,
   );
-
-  Future<List<AddCityModel>> fetchGeocoding(String search);
 }
 
 class OpenWeatherRepositoryImpl extends OpenWeatherRepository {
@@ -53,47 +43,35 @@ class OpenWeatherRepositoryImpl extends OpenWeatherRepository {
   OpenWeatherRemoteDataSource openWeatherRemoteDataSource;
 
   @override
-  List<GeocodingModel> getGeocodingAll() {
-    return openWeatherLocalDataSource
-        .getGeocodingAll()
-        .map((element) => element.toGeocodingModel())
-        .toList();
+  Future<List<GeographicalCoordinatesEntity>> getGeographicalCoordinatesAll() {
+    return openWeatherLocalDataSource.getGeographicalCoordinatesAll();
   }
 
   @override
-  List<ManageCitiesModel> getManageCities() {
-    return openWeatherLocalDataSource
-        .getGeocodingAll()
-        .map((element) => element.toManageCitiesModel())
-        .toList();
+  void addGeographicalCoordinates(GeographicalCoordinatesEntity entity) {
+    return openWeatherLocalDataSource.addGeographicalCoordinates(entity);
   }
 
   @override
-  void addGeocoding(GeocodingEntity geocoding) {
-    return openWeatherLocalDataSource.addGeocoding(geocoding);
+  void removeGeographicalCoordinates(GeographicalCoordinatesEntity entity) {
+    return openWeatherLocalDataSource.removeGeographicalCoordinates(entity);
   }
 
   @override
-  void removeGeocoding(GeocodingEntity geocoding) {
-    return openWeatherLocalDataSource.removeGeocoding(geocoding);
-  }
-
-  @override
-  Future<CurrentWeatherModel> fetchCurrentWeather(
+  Future<CurrentWeatherResponse> fetchCurrentWeather(
     double? lat,
     double? lon,
     String units,
   ) async {
-    final result = await openWeatherRemoteDataSource.fetchCurrentWeather(
+    return openWeatherRemoteDataSource.fetchCurrentWeather(
       lat,
       lon,
       units,
     );
-    return result.toCurrentWeatherModel();
   }
 
   @override
-  Future<List<HomeForecastModel>> fetchHomeForecast(
+  Future<List<Forecast>> fetchForecast(
     double? lat,
     double? lon,
     String units,
@@ -103,31 +81,14 @@ class OpenWeatherRepositoryImpl extends OpenWeatherRepository {
       lon,
       units,
     );
-    return result.list
-            ?.map((element) => element.toHomeForecastModel())
-            .toList() ??
-        [];
+    return result.list ?? [];
   }
 
   @override
-  Future<List<ForecastModel>> fetchForecast(
-    double? lat,
-    double? lon,
-    String units,
-  ) async {
-    final result = await openWeatherRemoteDataSource.fetchForecast(
-      lat,
-      lon,
-      units,
-    );
-    return result.list?.map((element) => element.toForecastModel()).toList() ??
-        [];
-  }
-
-  @override
-  Future<List<AddCityModel>> fetchGeocoding(String search) async {
-    final result = await openWeatherRemoteDataSource.fetchGeocoding(search, 5);
-    return result.map((element) => element.toAddCityModel()).toList();
+  Future<List<GeographicalCoordinatesResponse>> fetchGeographicalCoordinates(
+    String search,
+  ) {
+    return openWeatherRemoteDataSource.fetchGeographicalCoordinates(search, 5);
   }
 }
 
@@ -144,37 +105,36 @@ OpenWeatherRepository openWeatherRepository(OpenWeatherRepositoryRef ref) {
 }
 
 @riverpod
-List<GeocodingModel> getGeocodingAll(GetGeocodingAllRef ref) {
+Future<List<GeographicalCoordinatesEntity>> getGeographicalCoordinatesAll(
+  GetGeographicalCoordinatesAllRef ref,
+) {
   final openWeatherRepository = ref.watch(openWeatherRepositoryProvider);
-  return openWeatherRepository.getGeocodingAll();
+  return openWeatherRepository.getGeographicalCoordinatesAll();
 }
 
 @riverpod
-List<ManageCitiesModel> getManageCities(GetManageCitiesRef ref) {
-  final openWeatherRepository = ref.watch(openWeatherRepositoryProvider);
-  return openWeatherRepository.getManageCities();
-}
-
-@riverpod
-void addGeocoding(
-  AddGeocodingRef ref, {
-  required AddCityModel addCity,
+void addGeographicalCoordinates(
+  AddGeographicalCoordinatesRef ref, {
+  required GeographicalCoordinatesResponse geographicalCoordinates,
 }) {
   final openWeatherRepository = ref.watch(openWeatherRepositoryProvider);
-  return openWeatherRepository.addGeocoding(addCity.toGeocodingEntity());
+  final entity = GeographicalCoordinatesEntity.fromResponse(
+    data: geographicalCoordinates,
+  );
+  return openWeatherRepository.addGeographicalCoordinates(entity);
 }
 
 @riverpod
-void removeGeocoding(
-  RemoveGeocodingRef ref, {
-  required GeocodingEntity geocoding,
+void removeGeographicalCoordinates(
+  RemoveGeographicalCoordinatesRef ref, {
+  required GeographicalCoordinatesEntity entity,
 }) {
   final openWeatherRepository = ref.watch(openWeatherRepositoryProvider);
-  return openWeatherRepository.removeGeocoding(geocoding);
+  return openWeatherRepository.removeGeographicalCoordinates(entity);
 }
 
 @riverpod
-Future<CurrentWeatherModel> fetchCurrentWeather(
+Future<CurrentWeatherResponse> fetchCurrentWeather(
   FetchCurrentWeatherRef ref, {
   double? lat,
   double? lon,
@@ -185,18 +145,7 @@ Future<CurrentWeatherModel> fetchCurrentWeather(
 }
 
 @riverpod
-Future<List<HomeForecastModel>> fetchHomeForecast(
-  FetchHomeForecastRef ref, {
-  double? lat,
-  double? lon,
-}) {
-  final openWeatherRepository = ref.watch(openWeatherRepositoryProvider);
-  final temperature = ref.watch(getAppTemperatureProvider);
-  return openWeatherRepository.fetchHomeForecast(lat, lon, temperature.units);
-}
-
-@riverpod
-Future<List<ForecastModel>> fetchForecast(
+Future<List<Forecast>> fetchForecast(
   FetchForecastRef ref, {
   double? lat,
   double? lon,
@@ -207,10 +156,10 @@ Future<List<ForecastModel>> fetchForecast(
 }
 
 @riverpod
-Future<List<AddCityModel>> fetchGeocoding(
-  FetchGeocodingRef ref, {
+Future<List<GeographicalCoordinatesResponse>> fetchGeographicalCoordinates(
+  FetchGeographicalCoordinatesRef ref, {
   required String search,
 }) {
   final openWeatherRepository = ref.watch(openWeatherRepositoryProvider);
-  return openWeatherRepository.fetchGeocoding(search);
+  return openWeatherRepository.fetchGeographicalCoordinates(search);
 }

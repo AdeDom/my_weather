@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:my_weather/presentation/city/manage_cities/manage_cities_screen.dart';
+import 'package:my_weather/presentation/city/city_landing/city_landing_screen.dart';
 import 'package:my_weather/presentation/forecast/forecast_screen.dart';
 import 'package:my_weather/presentation/forecast/models/forecast_argument.dart';
 import 'package:my_weather/presentation/home/home_screen.dart';
@@ -10,7 +10,7 @@ import 'package:my_weather/routing/not_found_screen.dart';
 enum AppRoute {
   home,
   forecast,
-  manageCities,
+  cityLanding,
   settings,
   aboutWeather;
 }
@@ -32,9 +32,9 @@ final GoRouter appRouter = GoRouter(
           },
         ),
         GoRoute(
-          path: AppRoute.manageCities.name,
-          name: AppRoute.manageCities.name,
-          builder: (context, state) => const ManageCitiesScreen(),
+          path: AppRoute.cityLanding.name,
+          name: AppRoute.cityLanding.name,
+          builder: (context, state) => const CityLandingScreen(),
         ),
         GoRoute(
           path: AppRoute.settings.name,

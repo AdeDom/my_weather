@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_weather/data/models/enum/date_time_format.dart';
+import 'package:my_weather/data/models/response/forecast/forecast_response.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
-import 'package:my_weather/domain/models/forecast/forecast_model.dart';
 import 'package:my_weather/presentation/forecast/models/forecast_argument.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 import 'package:my_weather/ui/common_widgets/weather_icon_widget.dart';
+import 'package:my_weather/utils/extensions/double_extensions.dart';
+import 'package:my_weather/utils/extensions/int_extensions.dart';
 
 class ForecastScreen extends ConsumerStatefulWidget {
   const ForecastScreen({
@@ -55,7 +58,10 @@ class _ForecastScreenState extends ConsumerState<ForecastScreen> {
     );
   }
 
-  Widget _buildForecastItemWidget(ForecastModel data) {
+  Widget _buildForecastItemWidget(Forecast forecast) {
+    final weatherFirst = forecast.weather?.firstOrNull;
+    final tempMin = forecast.main?.tempMin?.temperature;
+    final tempMax = forecast.main?.tempMax?.temperature;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -63,30 +69,30 @@ class _ForecastScreenState extends ConsumerState<ForecastScreen> {
           children: [
             SizedBox(
               width: Sizes.p32,
-              child: WeatherIconWidget(weather: data.weather),
+              child: WeatherIconWidget(weather: weatherFirst?.main),
             ),
             const SizedBox(width: Sizes.p8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  data.weather.value,
+                  weatherFirst?.main.value ?? '',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
-                  data.dateTime,
+                  forecast.dt?.convertDateTime(DateTimeFormat.dateTime) ?? '',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),
             const Spacer(),
             Text(
-              '${data.temp}°',
+              '${forecast.main?.temp?.toInt()}°',
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             const SizedBox(width: Sizes.p16),
             Text(
-              data.tempMinMax,
+              '$tempMin°/$tempMax°',
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ],

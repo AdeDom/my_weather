@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/models/enum/app_weather.dart';
+import 'package:my_weather/data/models/response/current_weather/current_weather_response.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
-import 'package:my_weather/domain/models/home/current_weather_model.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 
@@ -35,7 +35,7 @@ class _WeatherBackgroundWidgetState
     );
   }
 
-  Widget _buildBackgroundWidget(CurrentWeatherModel data) {
+  Widget _buildBackgroundWidget(CurrentWeatherResponse data) {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     final assetImage = _getAssetImage(data);
@@ -51,10 +51,11 @@ class _WeatherBackgroundWidgetState
     }
   }
 
-  String? _getAssetImage(CurrentWeatherModel data) {
+  String? _getAssetImage(CurrentWeatherResponse data) {
+    final weatherFirst = data.weather?.firstOrNull;
     final isDarkMode = ref.watch(isDarkModeProvider);
     const resource = 'assets/images/';
-    switch (data.weather) {
+    switch (weatherFirst?.main) {
       case AppWeather.rain:
         return isDarkMode
             ? '${resource}img_rainy_dark.png'
@@ -68,6 +69,8 @@ class _WeatherBackgroundWidgetState
             ? '${resource}img_cloudy_dark.png'
             : '${resource}img_cloudy_light.png';
       case AppWeather.unknown:
+        return null;
+      case null:
         return null;
     }
   }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_weather/data/data_source/remote/interceptor/base_interceptor.dart';
 import 'package:my_weather/data/models/response/current_weather/current_weather_response.dart';
 import 'package:my_weather/data/models/response/forecast/forecast_response.dart';
-import 'package:my_weather/data/models/response/geocoding/geocoding_response.dart';
+import 'package:my_weather/data/models/response/geographical_coordinates/geographical_coordinates_response.dart';
 import 'package:my_weather/utils/constants/app_constant.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -29,7 +29,7 @@ abstract class OpenWeatherRemoteDataSource {
   );
 
   @GET('geo/1.0/direct')
-  Future<List<GeocodingResponse>> fetchGeocoding(
+  Future<List<GeographicalCoordinatesResponse>> fetchGeographicalCoordinates(
     @Query('q') String search,
     @Query('limit') int limit,
   );

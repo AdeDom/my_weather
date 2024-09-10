@@ -1,22 +1,21 @@
-import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'geocoding_response.freezed.dart';
-part 'geocoding_response.g.dart';
+part 'geographical_coordinates_response.freezed.dart';
+part 'geographical_coordinates_response.g.dart';
 
 @freezed
-class GeocodingResponse with _$GeocodingResponse {
-  factory GeocodingResponse({
+class GeographicalCoordinatesResponse with _$GeographicalCoordinatesResponse {
+  factory GeographicalCoordinatesResponse({
     String? name,
     LocalNames? localNames,
     double? lat,
     double? lon,
     String? country,
     String? state,
-  }) = _GeocodingResponse;
+  }) = _GeographicalCoordinatesResponse;
 
-  factory GeocodingResponse.fromJson(Map<String, Object?> json) =>
-      _$GeocodingResponseFromJson(json);
+  factory GeographicalCoordinatesResponse.fromJson(Map<String, Object?> json) =>
+      _$GeographicalCoordinatesResponseFromJson(json);
 }
 
 @freezed

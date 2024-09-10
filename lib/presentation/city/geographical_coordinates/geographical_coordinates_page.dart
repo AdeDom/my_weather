@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_weather/domain/models/manage_cities/add_city_model.dart';
-import 'package:my_weather/presentation/city/add_city/providers/add_city_page_controller.dart';
+import 'package:my_weather/data/models/response/geographical_coordinates/geographical_coordinates_response.dart';
+import 'package:my_weather/presentation/city/geographical_coordinates/providers/geographical_coordinates_page_controller.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
-class AddCityPage extends ConsumerStatefulWidget {
-  const AddCityPage({super.key});
+class GeographicalCoordinatesPage extends ConsumerStatefulWidget {
+  const GeographicalCoordinatesPage({
+    super.key,
+    required this.onSelected,
+  });
+
+  final Function(GeographicalCoordinatesResponse) onSelected;
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _AddCityPageState();
+  ConsumerState createState() => _GeographicalCoordinatesPageState();
 }
 
-class _AddCityPageState extends ConsumerState<AddCityPage> {
+class _GeographicalCoordinatesPageState
+    extends ConsumerState<GeographicalCoordinatesPage> {
   final _formKey = GlobalKey<FormState>();
   final _searchController = TextEditingController();
 
@@ -48,7 +54,7 @@ class _AddCityPageState extends ConsumerState<AddCityPage> {
   }
 
   Padding _buildFormWidget() {
-    final result = ref.watch(addCityPageControllerProvider);
+    final result = ref.watch(geographicalCoordinatesPageControllerProvider);
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p16),
@@ -77,7 +83,7 @@ class _AddCityPageState extends ConsumerState<AddCityPage> {
   }
 
   Widget _buildCityListWidget() {
-    final result = ref.watch(addCityPageControllerProvider);
+    final result = ref.watch(geographicalCoordinatesPageControllerProvider);
 
     return result.when(
       data: (data) {
@@ -106,7 +112,7 @@ class _AddCityPageState extends ConsumerState<AddCityPage> {
               return SizedBox(
                 height: Sizes.p64,
                 child: GestureDetector(
-                  onTap: () => _onSelectedGeocoding(item),
+                  onTap: () => widget.onSelected(item),
                   child: Text(
                     '${item.name}, ${item.state}',
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -124,12 +130,9 @@ class _AddCityPageState extends ConsumerState<AddCityPage> {
 
   void _searchEditingComplete() {
     if (_formKey.currentState?.validate() == true) {
-      ref.read(addCityPageControllerProvider.notifier).fetchGeocoding(search);
+      ref
+          .read(geographicalCoordinatesPageControllerProvider.notifier)
+          .fetchGeographicalCoordinates(search);
     }
-  }
-
-  void _onSelectedGeocoding(AddCityModel addCity) {
-    ref.read(addCityPageControllerProvider.notifier).selectedGeocoding(addCity);
-    context.pop();
   }
 }

@@ -10,7 +10,7 @@ class WeatherIconWidget extends ConsumerStatefulWidget {
     required this.weather,
   });
 
-  final AppWeather weather;
+  final AppWeather? weather;
 
   @override
   ConsumerState createState() => _WeatherIconWidgetState();
@@ -50,6 +50,8 @@ class _WeatherIconWidgetState extends ConsumerState<WeatherIconWidget> {
             ? '${resource}ic_cloudy_dark.png'
             : '${resource}ic_cloudy_light.png';
       case AppWeather.unknown:
+        return null;
+      case null:
         return null;
     }
   }

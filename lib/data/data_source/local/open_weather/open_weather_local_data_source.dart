@@ -1,71 +1,53 @@
-import 'dart:convert';
-
-import 'package:my_weather/data/data_source/local/providers/shared_preferences_provider.dart';
-import 'package:my_weather/data/models/entity/geocoding/geocoding_entity.dart';
+import 'package:my_weather/data/data_source/local/providers/database_providers.dart';
+import 'package:my_weather/data/models/entity/geographical_coordinates/geographical_coordinates_entity.dart';
+import 'package:my_weather/utils/constants/app_constant.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 part 'open_weather_local_data_source.g.dart';
 
 abstract class OpenWeatherLocalDataSource {
-  List<GeocodingEntity> getGeocodingAll();
+  Future<List<GeographicalCoordinatesEntity>> getGeographicalCoordinatesAll();
 
-  void addGeocoding(GeocodingEntity geocoding);
+  void addGeographicalCoordinates(GeographicalCoordinatesEntity entity);
 
-  void removeGeocoding(GeocodingEntity geocoding);
+  void removeGeographicalCoordinates(GeographicalCoordinatesEntity entity);
 }
 
 class OpenWeatherLocalDataSourceImpl extends OpenWeatherLocalDataSource {
   OpenWeatherLocalDataSourceImpl({
-    required this.sharedPreferences,
+    required this.database,
   });
 
-  final SharedPreferences sharedPreferences;
-  static const _geoCodingKey = 'geo_coding';
+  final Database database;
 
   @override
-  List<GeocodingEntity> getGeocodingAll() {
-    final json = sharedPreferences.getString(_geoCodingKey);
-    if (json == null) {
-      return [];
-    }
-
-    final jsonDec = jsonDecode(json);
-    List<GeocodingEntity> geocodingList = List<GeocodingEntity>.from(
-      jsonDec.map((model) => GeocodingEntity.fromJson(model)),
+  Future<List<GeographicalCoordinatesEntity>>
+      getGeographicalCoordinatesAll() async {
+    final list = await database.query(
+      AppConstant.geographicalCoordinatesTableName,
     );
-    return geocodingList;
-  }
-
-  @override
-  void addGeocoding(GeocodingEntity geocoding) {
-    final geocodingList = getGeocodingAll();
-    final isGeocoding = geocodingList
-        .where((e) => e.name == geocoding.name && e.state == geocoding.state)
-        .firstOrNull;
-
-    if (isGeocoding == null) {
-      geocodingList.add(geocoding);
-      var json = jsonEncode(geocodingList.map((e) => e.toJson()).toList());
-      sharedPreferences.setString(_geoCodingKey, json);
-    }
-  }
-
-  @override
-  void removeGeocoding(GeocodingEntity geocoding) {
-    final geocodingList = getGeocodingAll();
-    final data = geocodingList
-        .map((element) {
-          final isName = element.name == geocoding.name;
-          final isState = element.state == geocoding.state;
-          final isDelete = isName && isState;
-          return isDelete ? null : element;
-        })
-        .whereType<GeocodingEntity>()
-        .map((element) => element.toJson())
+    return list
+        .map((element) => GeographicalCoordinatesEntity.fromJson(element))
         .toList();
-    var json = jsonEncode(data);
-    sharedPreferences.setString(_geoCodingKey, json);
+  }
+
+  @override
+  void addGeographicalCoordinates(GeographicalCoordinatesEntity entity) {
+    database.insert(
+      AppConstant.geographicalCoordinatesTableName,
+      entity.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  @override
+  void removeGeographicalCoordinates(GeographicalCoordinatesEntity entity) {
+    database.delete(
+      AppConstant.geographicalCoordinatesTableName,
+      where: 'id = ?',
+      whereArgs: [entity.id],
+    );
   }
 }
 
@@ -73,6 +55,6 @@ class OpenWeatherLocalDataSourceImpl extends OpenWeatherLocalDataSource {
 OpenWeatherLocalDataSource openWeatherLocalDataSource(
   OpenWeatherLocalDataSourceRef ref,
 ) {
-  final sharedPreferences = ref.watch(sharedPreferencesProvider);
-  return OpenWeatherLocalDataSourceImpl(sharedPreferences: sharedPreferences);
+  final database = ref.watch(databaseProvider);
+  return OpenWeatherLocalDataSourceImpl(database: database);
 }

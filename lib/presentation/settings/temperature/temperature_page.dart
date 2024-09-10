@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/models/enum/app_temperature.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
-import 'package:my_weather/presentation/settings/settings/providers/settings_providers.dart';
+import 'package:my_weather/presentation/settings/temperature/providers/temperature_controller.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class TemperaturePage extends ConsumerStatefulWidget {
@@ -17,8 +17,9 @@ class TemperaturePage extends ConsumerStatefulWidget {
 class _TemperaturePageState extends ConsumerState<TemperaturePage> {
   @override
   Widget build(BuildContext context) {
-    final isTemperatureCelsius = ref.watch(isTemperatureCelsiusProvider);
-    final isTemperatureFahrenheit = ref.watch(isTemperatureFahrenheitProvider);
+    final temperature = ref.watch(getAppTemperatureProvider);
+    final isTemperatureCelsius = temperature == AppTemperature.celsius;
+    final isTemperatureFahrenheit = temperature == AppTemperature.fahrenheit;
     return Padding(
       padding: const EdgeInsets.all(Sizes.p32),
       child: Column(
@@ -67,8 +68,9 @@ class _TemperaturePageState extends ConsumerState<TemperaturePage> {
   }
 
   void _onSelectTemperature(AppTemperature temperature) {
-    ref.read(setAppTemperatureProvider(temperature));
-    ref.invalidate(getAppTemperatureProvider);
+    ref
+        .read(temperatureControllerProvider.notifier)
+        .onSelectTemperature(temperature);
     context.pop();
   }
 }
