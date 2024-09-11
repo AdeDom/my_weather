@@ -57,7 +57,7 @@ class _HomeForecastWidgetState extends ConsumerState<HomeForecastWidget> {
     );
   }
 
-  Widget _buildForecastItemWidget(Forecast forecast) {
+  Widget _buildForecastItemWidget(ForecastItemResponse forecast) {
     return Padding(
       padding: const EdgeInsets.only(left: Sizes.p24),
       child: Center(

@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/models/entity/geographical_coordinates/geographical_coordinates_entity.dart';
 import 'package:my_weather/presentation/forecast/models/forecast_argument.dart';
-import 'package:my_weather/presentation/home/widget/current_weather_widget.dart';
-import 'package:my_weather/presentation/home/widget/home_forecast_widget.dart';
-import 'package:my_weather/presentation/home/widget/weather_background_widget.dart';
+import 'package:my_weather/presentation/home/widgets/current_weather_widget.dart';
+import 'package:my_weather/presentation/home/widgets/home_forecast_widget.dart';
+import 'package:my_weather/presentation/home/widgets/weather_background_widget.dart';
 import 'package:my_weather/routing/app_router.dart';
 
 class HomePage extends ConsumerStatefulWidget {

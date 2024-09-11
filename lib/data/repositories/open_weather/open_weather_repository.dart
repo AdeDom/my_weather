@@ -22,7 +22,7 @@ abstract class OpenWeatherRepository {
     String units,
   );
 
-  Future<List<Forecast>> fetchForecast(
+  Future<List<ForecastItemResponse>> fetchForecast(
     double? lat,
     double? lon,
     String units,
@@ -71,7 +71,7 @@ class OpenWeatherRepositoryImpl extends OpenWeatherRepository {
   }
 
   @override
-  Future<List<Forecast>> fetchForecast(
+  Future<List<ForecastItemResponse>> fetchForecast(
     double? lat,
     double? lon,
     String units,
@@ -149,7 +149,7 @@ Future<CurrentWeatherResponse> fetchCurrentWeather(
 }
 
 @riverpod
-Future<List<Forecast>> fetchForecast(
+Future<List<ForecastItemResponse>> fetchForecast(
   FetchForecastRef ref, {
   double? lat,
   double? lon,

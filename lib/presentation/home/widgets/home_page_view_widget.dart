@@ -1,0 +1,43 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
+import 'package:my_weather/presentation/home/home_page.dart';
+import 'package:my_weather/ui/common_widgets/app_empty_widget.dart';
+import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
+import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
+
+class HomePageViewWidget extends ConsumerStatefulWidget {
+  const HomePageViewWidget({
+    super.key,
+    required this.onPageViewChanged,
+  });
+
+  final Function(int) onPageViewChanged;
+
+  @override
+  ConsumerState createState() => _HomePageViewWidgetState();
+}
+
+class _HomePageViewWidgetState extends ConsumerState<HomePageViewWidget> {
+  @override
+  Widget build(BuildContext context) {
+    final result = ref.watch(getGeographicalCoordinatesAllProvider);
+
+    return result.when(
+      data: (data) {
+        if (data.isEmpty) {
+          return const AppEmptyWidget();
+        }
+
+        return PageView(
+          onPageChanged: widget.onPageViewChanged,
+          children: data
+              .map((element) => HomePage(geographicalCoordinates: element))
+              .toList(),
+        );
+      },
+      error: (error, _) => const AppErrorWidget(),
+      loading: () => const AppLoadingWidget(),
+    );
+  }
+}

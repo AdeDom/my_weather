@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'main.freezed.dart';
-part 'main.g.dart';
+part 'main_response.freezed.dart';
+part 'main_response.g.dart';
 
 @freezed
-class Main with _$Main {
-  factory Main({
+class MainResponse with _$MainResponse {
+  factory MainResponse({
     @JsonKey(name: 'temp') double? temp,
     @JsonKey(name: 'feels_like') double? feelsLike,
     @JsonKey(name: 'temp_min') double? tempMin,
@@ -15,7 +15,8 @@ class Main with _$Main {
     @JsonKey(name: 'grnd_level') int? grndLevel,
     @JsonKey(name: 'humidity') int? humidity,
     @JsonKey(name: 'temp_kf') double? tempKf,
-  }) = _Main;
+  }) = _MainResponse;
 
-  factory Main.fromJson(Map<String, Object?> json) => _$MainFromJson(json);
+  factory MainResponse.fromJson(Map<String, Object?> json) =>
+      _$MainResponseFromJson(json);
 }

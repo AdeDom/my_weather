@@ -19,12 +19,16 @@ class CityLandingController extends _$CityLandingController {
   void removeList(
     List<GeographicalCoordinatesModel> geographicalCoordinatesList,
   ) {
-    for (var element in geographicalCoordinatesList) {
-      if (element.isDelete) {
-        final entity = GeographicalCoordinatesEntity.fromModel(data: element);
-        ref.read(removeGeographicalCoordinatesProvider(entity: entity));
-      }
-    }
+    geographicalCoordinatesList
+        .where((element) => element.isDelete)
+        .map(
+          (element) => GeographicalCoordinatesEntity.fromModel(data: element),
+        )
+        .forEach(
+          (element) => ref.read(
+            removeGeographicalCoordinatesProvider(entity: element),
+          ),
+        );
     ref.invalidate(getGeographicalCoordinatesAllProvider);
   }
 }

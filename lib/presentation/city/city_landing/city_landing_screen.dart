@@ -5,8 +5,10 @@ import 'package:my_weather/data/models/response/geographical_coordinates/geograp
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
 import 'package:my_weather/presentation/city/city_landing/models/geographical_coordinates_model.dart';
 import 'package:my_weather/presentation/city/city_landing/providers/city_landing_controller.dart';
+import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_action_widget.dart';
+import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_list_view_widget.dart';
+import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_title_app_bar_widget.dart';
 import 'package:my_weather/presentation/city/geographical_coordinates/geographical_coordinates_page.dart';
-import 'package:my_weather/ui/common_widgets/app_empty_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class CityLandingScreen extends ConsumerStatefulWidget {
@@ -40,8 +42,16 @@ class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: _buildListViewWidget(),
-      floatingActionButton: _buildActionWidget(),
+      body: CityLandingListViewWidget(
+        geographicalCoordinatesList: _geographicalCoordinatesList,
+        isAddOrDelete: _isAddOrDelete,
+        onItemChecked: _onItemChecked,
+      ),
+      floatingActionButton: CityLandingActionWidget(
+        isAddOrDelete: _isAddOrDelete,
+        onRemoveList: _onRemoveList,
+        onShowBottomSheet: _onShowBottomSheet,
+      ),
     );
   }
 
@@ -56,7 +66,9 @@ class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
           child: const Text('Cancel'),
         ),
         leadingWidth: Sizes.p80,
-        title: _buildTitleAppBarWidget(),
+        title: CityLandingTitleAppBarWidget(
+          geographicalCoordinatesList: _geographicalCoordinatesList,
+        ),
         centerTitle: true,
         actions: [
           TextButton(
@@ -82,98 +94,13 @@ class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
     }
   }
 
-  Widget _buildListViewWidget() {
-    if (_geographicalCoordinatesList.isEmpty) {
-      return const AppEmptyWidget();
-    }
-
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Sizes.p16,
-        vertical: Sizes.p16,
-      ),
-      itemCount: _geographicalCoordinatesList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _buildCityCard(_geographicalCoordinatesList[index]);
-      },
-    );
-  }
-
-  Widget _buildActionWidget() {
-    final width = MediaQuery.sizeOf(context).width;
-    if (_isAddOrDelete) {
-      return InkWell(
-        onTap: _onRemoveList,
-        child: Container(
-          height: Sizes.p64,
-          width: width - Sizes.p32,
-          color: Theme.of(context).colorScheme.secondaryContainer,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.delete),
-              Text(
-                'Delete',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ],
-          ),
-        ),
-      );
-    } else {
-      return FloatingActionButton(
-        onPressed: _showBottomSheet,
-        child: const Icon(Icons.add),
-      );
-    }
-  }
-
-  Widget _buildCityCard(GeographicalCoordinatesModel item) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: Sizes.p16),
-      child: Card(
-        color: Theme.of(context).colorScheme.onPrimary,
-        child: ListTile(
-          title: Text(
-            item.name,
-            style: Theme.of(context).textTheme.displaySmall,
-          ),
-          subtitle: Text(
-            item.state,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          trailing: _isAddOrDelete
-              ? Checkbox(
-                  value: item.isDelete,
-                  onChanged: (value) => _onItemChecked(item),
-                )
-              : Container(width: Sizes.p2),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTitleAppBarWidget() {
-    final list = _geographicalCoordinatesList;
-    final isSelectAll = list.every((element) => element.isDelete);
-    final isDeselectAll = list.any((element) => element.isDelete);
-    final countSelected = list.where((element) => element.isDelete).length;
-    if (isSelectAll) {
-      return const Text('All selected');
-    } else if (isDeselectAll) {
-      return Text('$countSelected Selected');
-    } else {
-      return const Text('Select items');
-    }
-  }
-
   void _onChangeAction() {
     setState(() {
       _isAddOrDelete = !_isAddOrDelete;
     });
   }
 
-  void _showBottomSheet() {
+  void _onShowBottomSheet() {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,

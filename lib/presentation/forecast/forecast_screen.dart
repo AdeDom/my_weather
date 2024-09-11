@@ -58,7 +58,7 @@ class _ForecastScreenState extends ConsumerState<ForecastScreen> {
     );
   }
 
-  Widget _buildForecastItemWidget(Forecast forecast) {
+  Widget _buildForecastItemWidget(ForecastItemResponse forecast) {
     final weatherFirst = forecast.weather?.firstOrNull;
     final tempMin = forecast.main?.tempMin?.temperature;
     final tempMax = forecast.main?.tempMax?.temperature;

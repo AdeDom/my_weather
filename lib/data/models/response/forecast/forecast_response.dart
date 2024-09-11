@@ -1,11 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:my_weather/data/models/response/clouds.dart';
-import 'package:my_weather/data/models/response/coord.dart';
-import 'package:my_weather/data/models/response/main.dart';
-import 'package:my_weather/data/models/response/rain.dart';
-import 'package:my_weather/data/models/response/sys.dart';
-import 'package:my_weather/data/models/response/weather.dart';
-import 'package:my_weather/data/models/response/wind.dart';
+import 'package:my_weather/data/models/response/clouds_response.dart';
+import 'package:my_weather/data/models/response/coord_response.dart';
+import 'package:my_weather/data/models/response/main_response.dart';
+import 'package:my_weather/data/models/response/rain_response.dart';
+import 'package:my_weather/data/models/response/sys_response.dart';
+import 'package:my_weather/data/models/response/weather_response.dart';
+import 'package:my_weather/data/models/response/wind_response.dart';
 
 part 'forecast_response.freezed.dart';
 part 'forecast_response.g.dart';
@@ -16,8 +16,8 @@ class ForecastResponse with _$ForecastResponse {
     @JsonKey(name: 'cod') String? cod,
     @JsonKey(name: 'message') int? message,
     @JsonKey(name: 'cnt') int? cnt,
-    @JsonKey(name: 'list') List<Forecast>? list,
-    @JsonKey(name: 'city') City? city,
+    @JsonKey(name: 'list') List<ForecastItemResponse>? list,
+    @JsonKey(name: 'city') CityResponse? city,
   }) = _ForecastResponse;
 
   factory ForecastResponse.fromJson(Map<String, Object?> json) =>
@@ -25,36 +25,37 @@ class ForecastResponse with _$ForecastResponse {
 }
 
 @freezed
-class Forecast with _$Forecast {
-  factory Forecast({
+class ForecastItemResponse with _$ForecastItemResponse {
+  factory ForecastItemResponse({
     @JsonKey(name: 'dt') int? dt,
-    @JsonKey(name: 'main') Main? main,
-    @JsonKey(name: 'weather') List<Weather>? weather,
-    @JsonKey(name: 'clouds') Clouds? clouds,
-    @JsonKey(name: 'wind') Wind? wind,
+    @JsonKey(name: 'main') MainResponse? main,
+    @JsonKey(name: 'weather') List<WeatherResponse>? weather,
+    @JsonKey(name: 'clouds') CloudsResponse? clouds,
+    @JsonKey(name: 'wind') WindResponse? wind,
     @JsonKey(name: 'visibility') int? visibility,
     @JsonKey(name: 'pop') double? pop,
-    @JsonKey(name: 'rain') Rain? rain,
-    @JsonKey(name: 'sys') Sys? sys,
+    @JsonKey(name: 'rain') RainResponse? rain,
+    @JsonKey(name: 'sys') SysResponse? sys,
     @JsonKey(name: 'dt_txt') String? dtTxt,
-  }) = _Forecast;
+  }) = _ForecastItemResponse;
 
-  factory Forecast.fromJson(Map<String, Object?> json) =>
-      _$ForecastFromJson(json);
+  factory ForecastItemResponse.fromJson(Map<String, Object?> json) =>
+      _$ForecastItemResponseFromJson(json);
 }
 
 @freezed
-class City with _$City {
-  factory City({
+class CityResponse with _$CityResponse {
+  factory CityResponse({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'name') String? name,
-    @JsonKey(name: 'coord') Coord? coord,
+    @JsonKey(name: 'coord') CoordResponse? coord,
     @JsonKey(name: 'country') String? country,
     @JsonKey(name: 'population') int? population,
     @JsonKey(name: 'timezone') int? timezone,
     @JsonKey(name: 'sunrise') int? sunrise,
     @JsonKey(name: 'sunset') int? sunset,
-  }) = _City;
+  }) = _CityResponse;
 
-  factory City.fromJson(Map<String, Object?> json) => _$CityFromJson(json);
+  factory CityResponse.fromJson(Map<String, Object?> json) =>
+      _$CityResponseFromJson(json);
 }

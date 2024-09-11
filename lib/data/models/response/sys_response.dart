@@ -1,18 +1,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'sys.freezed.dart';
-part 'sys.g.dart';
+part 'sys_response.freezed.dart';
+part 'sys_response.g.dart';
 
 @freezed
-class Sys with _$Sys {
-  factory Sys({
+class SysResponse with _$SysResponse {
+  factory SysResponse({
     @JsonKey(name: 'type') int? type,
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'country') String? country,
     @JsonKey(name: 'sunrise') int? sunrise,
     @JsonKey(name: 'sunset') int? sunset,
     @JsonKey(name: 'pod') String? pod,
-  }) = _Sys;
+  }) = _SysResponse;
 
-  factory Sys.fromJson(Map<String, Object?> json) => _$SysFromJson(json);
+  factory SysResponse.fromJson(Map<String, Object?> json) =>
+      _$SysResponseFromJson(json);
 }

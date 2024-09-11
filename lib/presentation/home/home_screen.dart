@@ -3,12 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
-import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
-import 'package:my_weather/presentation/home/home_page.dart';
+import 'package:my_weather/presentation/home/widgets/home_page_view_widget.dart';
+import 'package:my_weather/presentation/home/widgets/home_title_app_bar_widget.dart';
 import 'package:my_weather/routing/app_router.dart';
-import 'package:my_weather/ui/common_widgets/app_empty_widget.dart';
-import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
-import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -25,7 +22,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: _buildAppBarWidget(),
-      body: _buildPageViewWidget(),
+      body: HomePageViewWidget(
+        onPageViewChanged: _onPageViewChanged,
+      ),
     );
   }
 
@@ -36,7 +35,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       systemOverlayStyle:
           isDarkMode ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
       backgroundColor: Colors.transparent,
-      title: _buildTitleAppBarWidget(),
+      title: HomeTitleAppBarWidget(pageViewIndex: _pageViewIndex),
       actions: [
         IconButton(
           onPressed: _onOpenCityScreen,
@@ -53,48 +52,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget? _buildTitleAppBarWidget() {
-    final result = ref.watch(getGeographicalCoordinatesAllProvider);
-
-    return result.when(
-      data: (data) {
-        return Text(
-          data.isEmpty ? 'My Weather' : data[_pageViewIndex].name,
-          style: Theme.of(context).textTheme.headlineMedium,
-        );
-      },
-      error: (error, _) => Text(
-        'My Weather',
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
-      loading: () => Text(
-        'My Weather',
-        style: Theme.of(context).textTheme.headlineMedium,
-      ),
-    );
-  }
-
-  Widget _buildPageViewWidget() {
-    final result = ref.watch(getGeographicalCoordinatesAllProvider);
-
-    return result.when(
-      data: (data) {
-        if (data.isEmpty) {
-          return const AppEmptyWidget();
-        }
-
-        return PageView(
-          onPageChanged: _onPageViewChanged,
-          children: data
-              .map((element) => HomePage(geographicalCoordinates: element))
-              .toList(),
-        );
-      },
-      error: (error, _) => const AppErrorWidget(),
-      loading: () => const AppLoadingWidget(),
     );
   }
 

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:my_weather/data/data_source/remote/interceptor/app_exception.dart';
+import 'package:my_weather/data/data_source/remote/exception/app_exception.dart';
 import 'package:my_weather/utils/constants/app_constant.dart';
 
 class BaseInterceptor extends Interceptor {
