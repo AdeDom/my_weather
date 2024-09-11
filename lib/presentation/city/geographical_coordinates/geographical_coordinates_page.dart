@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/models/response/geographical_coordinates/geographical_coordinates_response.dart';
 import 'package:my_weather/presentation/city/geographical_coordinates/providers/geographical_coordinates_page_controller.dart';
+import 'package:my_weather/ui/common_widgets/app_empty_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
@@ -92,11 +93,8 @@ class _GeographicalCoordinatesPageState
         }
 
         if (data.isEmpty) {
-          return Center(
-            child: Text(
-              '404 - Page not found!',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+          return const Center(
+            child: AppEmptyWidget(),
           );
         }
 

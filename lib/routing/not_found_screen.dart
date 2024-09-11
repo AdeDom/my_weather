@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:my_weather/routing/app_router.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
@@ -14,9 +15,10 @@ class NotFoundScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              '404 - Page not found!',
-              style: Theme.of(context).textTheme.headlineMedium,
+            SizedBox(
+              width: Sizes.p128,
+              height: Sizes.p128,
+              child: Lottie.asset('assets/lottie/empty_lottie.json'),
             ),
             const SizedBox(height: Sizes.p32),
             ElevatedButton(

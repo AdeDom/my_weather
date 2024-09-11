@@ -27,6 +27,7 @@ class AppErrorWidget extends StatelessWidget {
             Text(
               message!,
               style: Theme.of(context).textTheme.titleLarge,
+              textAlign: TextAlign.center,
             ),
           ],
         ],

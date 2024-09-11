@@ -88,7 +88,11 @@ class OpenWeatherRepositoryImpl extends OpenWeatherRepository {
   Future<List<GeographicalCoordinatesResponse>> fetchGeographicalCoordinates(
     String search,
   ) {
-    return openWeatherRemoteDataSource.fetchGeographicalCoordinates(search, 5);
+    const limit = 5;
+    return openWeatherRemoteDataSource.fetchGeographicalCoordinates(
+      search,
+      limit,
+    );
   }
 }
 
