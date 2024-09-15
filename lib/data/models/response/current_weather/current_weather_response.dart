@@ -13,20 +13,20 @@ part 'current_weather_response.g.dart';
 @freezed
 class CurrentWeatherResponse with _$CurrentWeatherResponse {
   factory CurrentWeatherResponse({
-    @JsonKey(name: 'coord') CoordResponse? coord,
-    @JsonKey(name: 'weather') List<WeatherResponse>? weather,
-    @JsonKey(name: 'base') String? base,
-    @JsonKey(name: 'main') MainResponse? main,
-    @JsonKey(name: 'visibility') int? visibility,
-    @JsonKey(name: 'wind') WindResponse? wind,
-    @JsonKey(name: 'clouds') CloudsResponse? clouds,
-    @JsonKey(name: 'rain') RainResponse? rain,
-    @JsonKey(name: 'dt') int? dt,
-    @JsonKey(name: 'sys') SysResponse? sys,
-    @JsonKey(name: 'timezone') int? timezone,
-    @JsonKey(name: 'id') int? id,
-    @JsonKey(name: 'name') String? name,
-    @JsonKey(name: 'cod') int? cod,
+    CoordResponse? coord,
+    List<WeatherResponse>? weather,
+    String? base,
+    MainResponse? main,
+    int? visibility,
+    WindResponse? wind,
+    CloudsResponse? clouds,
+    RainResponse? rain,
+    int? dt,
+    SysResponse? sys,
+    int? timezone,
+    int? id,
+    String? name,
+    int? cod,
   }) = _CurrentWeatherResponse;
 
   factory CurrentWeatherResponse.fromJson(Map<String, Object?> json) =>

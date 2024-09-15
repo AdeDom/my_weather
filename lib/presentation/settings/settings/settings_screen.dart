@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_weather/presentation/settings/settings/providers/settings_controller.dart';
+import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
 import 'package:my_weather/presentation/settings/settings/widgets/settings_about_weather_widget.dart';
 import 'package:my_weather/presentation/settings/settings/widgets/settings_theme_widget.dart';
 import 'package:my_weather/presentation/settings/settings/widgets/settings_units_widget.dart';
 import 'package:my_weather/presentation/settings/temperature/temperature_page.dart';
-import 'package:my_weather/routing/app_router.dart';
+import 'package:my_weather/router/enum/app_router_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -36,7 +36,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _onChangeTheme(bool value) {
-    ref.read(settingsControllerProvider.notifier).onChangeTheme(value);
+    ref.read(setDarkModeProvider(value));
+    ref.invalidate(isDarkModeProvider);
   }
 
   void _onShowTemperatureBottomSheet() {
@@ -47,6 +48,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _onOpenAboutWeather() {
-    context.goNamed(AppRoute.aboutWeather.name);
+    context.goNamed(AppRouteScreen.aboutWeather.name);
   }
 }

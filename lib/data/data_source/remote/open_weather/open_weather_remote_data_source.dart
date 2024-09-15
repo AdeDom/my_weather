@@ -15,15 +15,15 @@ abstract class OpenWeatherRemoteDataSource {
 
   @GET('data/2.5/weather')
   Future<CurrentWeatherResponse> fetchCurrentWeather(
-    @Query('lat') double? lat,
-    @Query('lon') double? lon,
+    @Query('lat') double lat,
+    @Query('lon') double lon,
     @Query('units') String units,
   );
 
   @GET('data/2.5/forecast')
   Future<ForecastResponse> fetchForecast(
-    @Query('lat') double? lat,
-    @Query('lon') double? lon,
+    @Query('lat') double lat,
+    @Query('lon') double lon,
     @Query('units') String units,
   );
 

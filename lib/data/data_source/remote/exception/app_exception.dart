@@ -15,6 +15,6 @@ class AppException extends DioException {
   String toString() {
     final json = response?.data;
     final errorResponse = ErrorResponse.fromJson(json);
-    return errorResponse.message ?? type.name;
+    return errorResponse.message ?? '${errorResponse.cod}';
   }
 }

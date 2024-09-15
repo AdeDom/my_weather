@@ -11,7 +11,7 @@ abstract class OpenWeatherLocalDataSource {
 
   void addGeographicalCoordinates(GeographicalCoordinatesEntity entity);
 
-  void removeGeographicalCoordinates(GeographicalCoordinatesEntity entity);
+  void deleteByIds(List<String> selectIds);
 }
 
 class OpenWeatherLocalDataSourceImpl extends OpenWeatherLocalDataSource {
@@ -42,12 +42,13 @@ class OpenWeatherLocalDataSourceImpl extends OpenWeatherLocalDataSource {
   }
 
   @override
-  void removeGeographicalCoordinates(GeographicalCoordinatesEntity entity) {
-    database.delete(
-      AppConstant.geographicalCoordinatesTableName,
-      where: 'id = ?',
-      whereArgs: [entity.id],
-    );
+  void deleteByIds(List<String> selectIds) {
+    final entryIds = selectIds.map((element) => "'$element'").join(',');
+    String sql = '''
+      DELETE FROM geographical_coordinates
+      WHERE id IN ($entryIds);
+    ''';
+    database.rawDelete(sql);
   }
 }
 

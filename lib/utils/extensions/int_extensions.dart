@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:my_weather/data/models/enum/date_time_format.dart';
+import 'package:my_weather/utils/enum/date_time_format.dart';
 
 extension DateString on int {
   String convertDateTime(DateTimeFormat format) {

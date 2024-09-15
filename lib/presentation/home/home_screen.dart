@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
 import 'package:my_weather/presentation/home/widgets/home_page_view_widget.dart';
 import 'package:my_weather/presentation/home/widgets/home_title_app_bar_widget.dart';
-import 'package:my_weather/routing/app_router.dart';
+import 'package:my_weather/router/enum/app_router_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -62,10 +62,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void _onOpenCityScreen() {
-    context.goNamed(AppRoute.cityLanding.name);
+    context.goNamed(AppRouteScreen.cityLanding.name);
   }
 
   void _onOpenSettingsScreen() {
-    context.goNamed(AppRoute.settings.name);
+    context.goNamed(AppRouteScreen.settings.name);
   }
 }

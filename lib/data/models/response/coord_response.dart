@@ -6,8 +6,8 @@ part 'coord_response.g.dart';
 @freezed
 class CoordResponse with _$CoordResponse {
   factory CoordResponse({
-    @JsonKey(name: 'lat') double? lat,
-    @JsonKey(name: 'lon') double? lon,
+    double? lat,
+    double? lon,
   }) = _CoordResponse;
 
   factory CoordResponse.fromJson(Map<String, Object?> json) =>

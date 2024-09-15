@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
-class SettingsThemeWidget extends ConsumerStatefulWidget {
+class SettingsThemeWidget extends ConsumerWidget {
   const SettingsThemeWidget({
     super.key,
     required this.onChangeTheme,
@@ -12,12 +12,7 @@ class SettingsThemeWidget extends ConsumerStatefulWidget {
   final Function(bool) onChangeTheme;
 
   @override
-  ConsumerState createState() => _SettingsThemeWidgetState();
-}
-
-class _SettingsThemeWidgetState extends ConsumerState<SettingsThemeWidget> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDarkMode = ref.watch(isDarkModeProvider);
     return Padding(
       padding: const EdgeInsets.all(Sizes.p8),
@@ -48,7 +43,7 @@ class _SettingsThemeWidgetState extends ConsumerState<SettingsThemeWidget> {
                   const Spacer(),
                   Switch(
                     value: isDarkMode,
-                    onChanged: widget.onChangeTheme,
+                    onChanged: onChangeTheme,
                   ),
                 ],
               ),

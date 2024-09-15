@@ -27,6 +27,11 @@ class _CurrentWeatherWidgetState extends ConsumerState<CurrentWeatherWidget> {
   Widget build(BuildContext context) {
     final lat = widget.lat;
     final lon = widget.lon;
+
+    if (lat == null || lon == null) {
+      return const AppErrorWidget(message: 'Something went wrong');
+    }
+
     final result = ref.watch(fetchCurrentWeatherProvider(lat: lat, lon: lon));
 
     return result.when(

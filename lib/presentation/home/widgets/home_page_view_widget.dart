@@ -6,7 +6,7 @@ import 'package:my_weather/ui/common_widgets/app_empty_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 
-class HomePageViewWidget extends ConsumerStatefulWidget {
+class HomePageViewWidget extends ConsumerWidget {
   const HomePageViewWidget({
     super.key,
     required this.onPageViewChanged,
@@ -15,12 +15,7 @@ class HomePageViewWidget extends ConsumerStatefulWidget {
   final Function(int) onPageViewChanged;
 
   @override
-  ConsumerState createState() => _HomePageViewWidgetState();
-}
-
-class _HomePageViewWidgetState extends ConsumerState<HomePageViewWidget> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final result = ref.watch(getGeographicalCoordinatesAllProvider);
 
     return result.when(
@@ -30,7 +25,7 @@ class _HomePageViewWidgetState extends ConsumerState<HomePageViewWidget> {
         }
 
         return PageView(
-          onPageChanged: widget.onPageViewChanged,
+          onPageChanged: onPageViewChanged,
           children: data
               .map((element) => HomePage(geographicalCoordinates: element))
               .toList(),

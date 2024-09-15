@@ -13,11 +13,11 @@ part 'forecast_response.g.dart';
 @freezed
 class ForecastResponse with _$ForecastResponse {
   factory ForecastResponse({
-    @JsonKey(name: 'cod') String? cod,
-    @JsonKey(name: 'message') int? message,
-    @JsonKey(name: 'cnt') int? cnt,
-    @JsonKey(name: 'list') List<ForecastItemResponse>? list,
-    @JsonKey(name: 'city') CityResponse? city,
+    String? cod,
+    int? message,
+    int? cnt,
+    List<ForecastItemResponse>? list,
+    CityResponse? city,
   }) = _ForecastResponse;
 
   factory ForecastResponse.fromJson(Map<String, Object?> json) =>
@@ -27,15 +27,15 @@ class ForecastResponse with _$ForecastResponse {
 @freezed
 class ForecastItemResponse with _$ForecastItemResponse {
   factory ForecastItemResponse({
-    @JsonKey(name: 'dt') int? dt,
-    @JsonKey(name: 'main') MainResponse? main,
-    @JsonKey(name: 'weather') List<WeatherResponse>? weather,
-    @JsonKey(name: 'clouds') CloudsResponse? clouds,
-    @JsonKey(name: 'wind') WindResponse? wind,
-    @JsonKey(name: 'visibility') int? visibility,
-    @JsonKey(name: 'pop') double? pop,
-    @JsonKey(name: 'rain') RainResponse? rain,
-    @JsonKey(name: 'sys') SysResponse? sys,
+    int? dt,
+    MainResponse? main,
+    List<WeatherResponse>? weather,
+    CloudsResponse? clouds,
+    WindResponse? wind,
+    int? visibility,
+    double? pop,
+    RainResponse? rain,
+    SysResponse? sys,
     @JsonKey(name: 'dt_txt') String? dtTxt,
   }) = _ForecastItemResponse;
 
@@ -46,14 +46,14 @@ class ForecastItemResponse with _$ForecastItemResponse {
 @freezed
 class CityResponse with _$CityResponse {
   factory CityResponse({
-    @JsonKey(name: 'id') int? id,
-    @JsonKey(name: 'name') String? name,
-    @JsonKey(name: 'coord') CoordResponse? coord,
-    @JsonKey(name: 'country') String? country,
-    @JsonKey(name: 'population') int? population,
-    @JsonKey(name: 'timezone') int? timezone,
-    @JsonKey(name: 'sunrise') int? sunrise,
-    @JsonKey(name: 'sunset') int? sunset,
+    int? id,
+    String? name,
+    CoordResponse? coord,
+    String? country,
+    int? population,
+    int? timezone,
+    int? sunrise,
+    int? sunset,
   }) = _CityResponse;
 
   factory CityResponse.fromJson(Map<String, Object?> json) =>

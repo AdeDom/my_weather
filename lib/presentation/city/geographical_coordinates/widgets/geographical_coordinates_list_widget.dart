@@ -7,7 +7,7 @@ import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
-class GeographicalCoordinatesListWidget extends ConsumerStatefulWidget {
+class GeographicalCoordinatesListWidget extends ConsumerWidget {
   const GeographicalCoordinatesListWidget({
     super.key,
     required this.onSelected,
@@ -16,13 +16,7 @@ class GeographicalCoordinatesListWidget extends ConsumerStatefulWidget {
   final Function(GeographicalCoordinatesResponse) onSelected;
 
   @override
-  ConsumerState createState() => _GeographicalCoordinatesListWidgetState();
-}
-
-class _GeographicalCoordinatesListWidgetState
-    extends ConsumerState<GeographicalCoordinatesListWidget> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final result = ref.watch(geographicalCoordinatesPageControllerProvider);
 
     return result.when(
@@ -49,7 +43,7 @@ class _GeographicalCoordinatesListWidgetState
               return SizedBox(
                 height: Sizes.p64,
                 child: GestureDetector(
-                  onTap: () => widget.onSelected(item),
+                  onTap: () => onSelected(item),
                   child: Text(
                     '${item.name}, ${item.state}',
                     style: Theme.of(context).textTheme.bodyLarge,

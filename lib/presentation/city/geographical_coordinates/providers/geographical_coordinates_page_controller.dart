@@ -16,7 +16,7 @@ class GeographicalCoordinatesPageController
     state = const AsyncLoading();
     state = await AsyncValue.guard(
       () {
-        return ref.watch(
+        return ref.read(
           fetchGeographicalCoordinatesProvider(search: search).future,
         );
       },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-import 'package:my_weather/routing/app_router.dart';
+import 'package:my_weather/router/enum/app_router_screen.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class NotFoundScreen extends StatelessWidget {
@@ -22,7 +22,7 @@ class NotFoundScreen extends StatelessWidget {
             ),
             const SizedBox(height: Sizes.p32),
             ElevatedButton(
-              onPressed: () => context.goNamed(AppRoute.home.name),
+              onPressed: () => context.goNamed(AppRouteScreen.home.name),
               child: const Text('Go Home'),
             ),
           ],

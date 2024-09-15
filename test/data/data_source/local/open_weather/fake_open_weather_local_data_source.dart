@@ -16,8 +16,9 @@ class FakeOpenWeatherLocalDataSource extends OpenWeatherLocalDataSource {
   }
 
   @override
-  void removeGeographicalCoordinates(GeographicalCoordinatesEntity entity) {
-    geographicalCoordinatesList
-        .removeWhere((element) => element.id == entity.id);
+  void deleteByIds(List<String> selectIds) {
+    for (var element in selectIds) {
+      geographicalCoordinatesList.removeWhere((e) => e.id == element);
+    }
   }
 }

@@ -11,7 +11,7 @@ class BaseInterceptor extends Interceptor {
     };
     queryParameters.addAll(apiKey);
     options.queryParameters = queryParameters;
-    super.onRequest(options, handler);
+    handler.next(options);
   }
 
   @override
@@ -19,7 +19,7 @@ class BaseInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) {
-    super.onError(err, handler);
+    handler.next(err);
     throw AppException(
       requestOptions: err.requestOptions,
       response: err.response,

@@ -7,15 +7,15 @@ part 'weather_response.g.dart';
 @freezed
 class WeatherResponse with _$WeatherResponse {
   factory WeatherResponse({
-    @JsonKey(name: 'id') int? id,
+    int? id,
     @JsonKey(
       name: 'main',
       defaultValue: AppWeather.unknown,
       unknownEnumValue: AppWeather.unknown,
     )
     required AppWeather main,
-    @JsonKey(name: 'description') String? description,
-    @JsonKey(name: 'icon') String? icon,
+    String? description,
+    String? icon,
   }) = _WeatherResponse;
 
   factory WeatherResponse.fromJson(Map<String, Object?> json) =>

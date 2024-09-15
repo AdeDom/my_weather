@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/data_source/local/providers/database_providers.dart';
 import 'package:my_weather/data/data_source/local/providers/shared_preferences_provider.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
-import 'package:my_weather/routing/app_router.dart';
 import 'package:my_weather/ui/common_widgets/loading_screen.dart';
 import 'package:my_weather/ui/theme/theme.dart';
 import 'package:my_weather/ui/theme/util.dart';
@@ -11,6 +10,8 @@ import 'package:my_weather/utils/constants/app_constant.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'router/providers/app_router_provider.dart';
 
 Future<void> main() async {
   runApp(const LoadingScreen());
@@ -51,18 +52,16 @@ class _MainAppState extends ConsumerState<MainApp> {
   Widget build(BuildContext context) {
     TextTheme textTheme = createTextTheme(
       context,
-      'IBM Plex Sans Thai',
+      'IBM Plex Sans Thai Looped',
       'IBM Plex Sans Thai',
     );
-
-    final isDarkMode = ref.watch(isDarkModeProvider);
 
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'My Weather',
-      theme: isDarkMode ? theme.dark() : theme.light(),
-      routerConfig: appRouter,
+      theme: ref.watch(isDarkModeProvider) ? theme.dark() : theme.light(),
+      routerConfig: ref.watch(appRouterProvider),
     );
   }
 }

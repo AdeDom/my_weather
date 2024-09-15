@@ -3,9 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/models/response/geographical_coordinates/geographical_coordinates_response.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
-import 'package:my_weather/presentation/city/city_landing/models/geographical_coordinates_model.dart';
-import 'package:my_weather/presentation/city/city_landing/providers/city_landing_controller.dart';
 import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_action_widget.dart';
+import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_checked_all_widget.dart';
 import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_list_view_widget.dart';
 import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_title_app_bar_widget.dart';
 import 'package:my_weather/presentation/city/geographical_coordinates/geographical_coordinates_page.dart';
@@ -20,32 +19,17 @@ class CityLandingScreen extends ConsumerStatefulWidget {
 
 class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
   bool _isAddOrDelete = false;
-  List<GeographicalCoordinatesModel> _geographicalCoordinatesList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    initData();
-  }
-
-  Future<void> initData() async {
-    final list = await ref.read(getGeographicalCoordinatesAllProvider.future);
-    final geographicalCoordinatesList = list.map((element) {
-      return GeographicalCoordinatesModel.fromEntity(data: element);
-    }).toList();
-    setState(() {
-      _geographicalCoordinatesList = geographicalCoordinatesList;
-    });
-  }
+  bool? _isCheckedAll;
+  List<String> _selectIds = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
       body: CityLandingListViewWidget(
-        geographicalCoordinatesList: _geographicalCoordinatesList,
         isAddOrDelete: _isAddOrDelete,
-        onItemChecked: _onItemChecked,
+        isCheckedAll: _isCheckedAll,
+        onSelectItem: _onSelectItem,
       ),
       floatingActionButton: CityLandingActionWidget(
         isAddOrDelete: _isAddOrDelete,
@@ -56,8 +40,6 @@ class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
   }
 
   PreferredSizeWidget _buildAppBar() {
-    final isSelectAll =
-        _geographicalCoordinatesList.every((element) => element.isDelete);
     if (_isAddOrDelete) {
       return AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -66,14 +48,12 @@ class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
           child: const Text('Cancel'),
         ),
         leadingWidth: Sizes.p80,
-        title: CityLandingTitleAppBarWidget(
-          geographicalCoordinatesList: _geographicalCoordinatesList,
-        ),
+        title: CityLandingTitleAppBarWidget(selectIds: _selectIds),
         centerTitle: true,
         actions: [
-          TextButton(
-            onPressed: _onCheckedAll,
-            child: Text(isSelectAll ? 'Deselect all' : 'Select all'),
+          CityLandingCheckedAllWidget(
+            selectIds: _selectIds,
+            onCheckedAll: _onCheckedAll,
           ),
         ],
       );
@@ -97,6 +77,7 @@ class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
   void _onChangeAction() {
     setState(() {
       _isAddOrDelete = !_isAddOrDelete;
+      _isCheckedAll = null;
     });
   }
 
@@ -116,61 +97,39 @@ class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
   ) {
     context.pop();
 
-    ref
-        .read(cityLandingControllerProvider.notifier)
-        .selectedGeographicalCoordinates(data);
-
-    final item = GeographicalCoordinatesModel.fromResponse(data: data);
-    _geographicalCoordinatesList.add(item);
-    setState(() {
-      _geographicalCoordinatesList = _geographicalCoordinatesList;
-    });
+    ref.read(addGeographicalCoordinatesProvider(geographicalCoordinates: data));
+    ref.invalidate(getGeographicalCoordinatesAllProvider);
   }
 
   void _onRemoveList() {
-    ref
-        .read(cityLandingControllerProvider.notifier)
-        .removeList(_geographicalCoordinatesList);
+    ref.read(deleteByIdsProvider(selectIds: _selectIds));
+    ref.invalidate(getGeographicalCoordinatesAllProvider);
 
-    final geographicalCoordinatesList = _geographicalCoordinatesList
-        .where((element) => !element.isDelete)
-        .toList();
     setState(() {
-      _geographicalCoordinatesList = geographicalCoordinatesList;
       _isAddOrDelete = !_isAddOrDelete;
+      _isCheckedAll = null;
+      _selectIds = [];
     });
   }
 
   void _onCancelAction() {
-    final geographicalCoordinatesList = _geographicalCoordinatesList
-        .map((element) => element.copyWith(isDelete: false))
-        .toList();
     setState(() {
-      _geographicalCoordinatesList = geographicalCoordinatesList;
       _isAddOrDelete = !_isAddOrDelete;
+      _isCheckedAll = null;
+      _selectIds = [];
     });
   }
 
   void _onCheckedAll() {
-    final isSelectAll =
-        _geographicalCoordinatesList.every((element) => element.isDelete);
-    final geographicalCoordinatesList = _geographicalCoordinatesList
-        .map((element) => element.copyWith(isDelete: !isSelectAll))
-        .toList();
     setState(() {
-      _geographicalCoordinatesList = geographicalCoordinatesList;
+      _isCheckedAll = !(_isCheckedAll ?? false);
     });
   }
 
-  void _onItemChecked(GeographicalCoordinatesModel item) {
-    final geographicalCoordinatesList =
-        _geographicalCoordinatesList.map((element) {
-      final isItem = element.id == item.id;
-      final isDelete = isItem ? !element.isDelete : element.isDelete;
-      return element.copyWith(isDelete: isDelete);
-    }).toList();
+  void _onSelectItem(List<String> selectIds) {
     setState(() {
-      _geographicalCoordinatesList = geographicalCoordinatesList;
+      _selectIds = selectIds;
+      _isCheckedAll = null;
     });
   }
 }

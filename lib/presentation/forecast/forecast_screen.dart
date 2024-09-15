@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_weather/data/models/enum/date_time_format.dart';
 import 'package:my_weather/data/models/response/forecast/forecast_response.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
 import 'package:my_weather/presentation/forecast/models/forecast_argument.dart';
@@ -8,6 +7,7 @@ import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 import 'package:my_weather/ui/common_widgets/weather_icon_widget.dart';
+import 'package:my_weather/utils/enum/date_time_format.dart';
 import 'package:my_weather/utils/extensions/double_extensions.dart';
 import 'package:my_weather/utils/extensions/int_extensions.dart';
 
@@ -38,6 +38,11 @@ class _ForecastScreenState extends ConsumerState<ForecastScreen> {
   Widget _buildListViewWidget() {
     final lat = widget.args.lat;
     final lon = widget.args.lon;
+
+    if (lat == null || lon == null) {
+      return const AppErrorWidget(message: 'Something went wrong');
+    }
+
     final result = ref.watch(fetchForecastProvider(lat: lat, lon: lon));
 
     return result.when(

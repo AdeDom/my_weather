@@ -6,7 +6,8 @@ part 'error_response.g.dart';
 @freezed
 class ErrorResponse with _$ErrorResponse {
   factory ErrorResponse({
-    @JsonKey(name: 'message') String? message,
+    dynamic cod,
+    String? message,
   }) = _ErrorResponse;
 
   factory ErrorResponse.fromJson(Map<String, Object?> json) =>

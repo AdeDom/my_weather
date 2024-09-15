@@ -1,42 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:my_weather/presentation/city/city_landing/models/geographical_coordinates_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_weather/data/models/entity/geographical_coordinates/geographical_coordinates_entity.dart';
+import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
 import 'package:my_weather/ui/common_widgets/app_empty_widget.dart';
+import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
-class CityLandingListViewWidget extends StatelessWidget {
+class CityLandingListViewWidget extends ConsumerStatefulWidget {
   const CityLandingListViewWidget({
     super.key,
-    required this.geographicalCoordinatesList,
     required this.isAddOrDelete,
-    required this.onItemChecked,
+    required this.isCheckedAll,
+    required this.onSelectItem,
   });
 
-  final List<GeographicalCoordinatesModel> geographicalCoordinatesList;
   final bool isAddOrDelete;
-  final Function(GeographicalCoordinatesModel) onItemChecked;
+  final bool? isCheckedAll;
+  final Function(List<String>) onSelectItem;
+
+  @override
+  ConsumerState createState() => _CityLandingListViewWidgetState();
+}
+
+class _CityLandingListViewWidgetState
+    extends ConsumerState<CityLandingListViewWidget> {
+  List<String> _selectIds = [];
 
   @override
   Widget build(BuildContext context) {
-    if (geographicalCoordinatesList.isEmpty) {
-      return const AppEmptyWidget();
-    }
+    final result = ref.watch(getGeographicalCoordinatesAllProvider);
 
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Sizes.p16,
-        vertical: Sizes.p16,
-      ),
-      itemCount: geographicalCoordinatesList.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _buildCityCard(context, geographicalCoordinatesList[index]);
+    return result.when(
+      data: (data) {
+        if (data.isEmpty) {
+          return const AppEmptyWidget();
+        }
+
+        return ListView.builder(
+          padding: const EdgeInsets.symmetric(
+            horizontal: Sizes.p16,
+            vertical: Sizes.p16,
+          ),
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return _buildCityCard(data[index]);
+          },
+        );
       },
+      error: (error, _) => ErrorWidget(error.toString()),
+      loading: () => const AppLoadingWidget(),
     );
   }
 
-  Widget _buildCityCard(
-    BuildContext context,
-    GeographicalCoordinatesModel item,
-  ) {
+  Widget _buildCityCard(GeographicalCoordinatesEntity item) {
     return Padding(
       padding: const EdgeInsets.only(bottom: Sizes.p16),
       child: Card(
@@ -50,14 +66,36 @@ class CityLandingListViewWidget extends StatelessWidget {
             item.state,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          trailing: isAddOrDelete
+          trailing: widget.isAddOrDelete
               ? Checkbox(
-                  value: item.isDelete,
-                  onChanged: (value) => onItemChecked(item),
+                  value: widget.isCheckedAll != null
+                      ? widget.isCheckedAll!
+                      : _selectIds.contains(item.id),
+                  onChanged: (value) => _onSelectItem(item.id),
                 )
               : Container(width: Sizes.p2),
         ),
       ),
     );
+  }
+
+  _onSelectItem(String id) {
+    final isSelected = _selectIds.contains(id);
+    if (isSelected) {
+      _selectIds.remove(id);
+    } else {
+      _selectIds.add(id);
+    }
+    setState(() {
+      _selectIds = _selectIds;
+    });
+    widget.onSelectItem(_selectIds);
+  }
+
+  @override
+  void didUpdateWidget(covariant CityLandingListViewWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final selectIds = widget.isAddOrDelete ? _selectIds : <String>[];
+    _selectIds = selectIds;
   }
 }

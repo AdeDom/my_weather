@@ -14,17 +14,17 @@ abstract class OpenWeatherRepository {
 
   void addGeographicalCoordinates(GeographicalCoordinatesEntity entity);
 
-  void removeGeographicalCoordinates(GeographicalCoordinatesEntity entity);
+  void deleteByIds(List<String> selectIds);
 
   Future<CurrentWeatherResponse> fetchCurrentWeather(
-    double? lat,
-    double? lon,
+    double lat,
+    double lon,
     String units,
   );
 
   Future<List<ForecastItemResponse>> fetchForecast(
-    double? lat,
-    double? lon,
+    double lat,
+    double lon,
     String units,
   );
 
@@ -53,14 +53,14 @@ class OpenWeatherRepositoryImpl extends OpenWeatherRepository {
   }
 
   @override
-  void removeGeographicalCoordinates(GeographicalCoordinatesEntity entity) {
-    return openWeatherLocalDataSource.removeGeographicalCoordinates(entity);
+  void deleteByIds(List<String> selectIds) {
+    return openWeatherLocalDataSource.deleteByIds(selectIds);
   }
 
   @override
   Future<CurrentWeatherResponse> fetchCurrentWeather(
-    double? lat,
-    double? lon,
+    double lat,
+    double lon,
     String units,
   ) async {
     return openWeatherRemoteDataSource.fetchCurrentWeather(
@@ -72,8 +72,8 @@ class OpenWeatherRepositoryImpl extends OpenWeatherRepository {
 
   @override
   Future<List<ForecastItemResponse>> fetchForecast(
-    double? lat,
-    double? lon,
+    double lat,
+    double lon,
     String units,
   ) async {
     final result = await openWeatherRemoteDataSource.fetchForecast(
@@ -129,19 +129,19 @@ void addGeographicalCoordinates(
 }
 
 @riverpod
-void removeGeographicalCoordinates(
-  RemoveGeographicalCoordinatesRef ref, {
-  required GeographicalCoordinatesEntity entity,
+void deleteByIds(
+  DeleteByIdsRef ref, {
+  required List<String> selectIds,
 }) {
   final openWeatherRepository = ref.watch(openWeatherRepositoryProvider);
-  return openWeatherRepository.removeGeographicalCoordinates(entity);
+  return openWeatherRepository.deleteByIds(selectIds);
 }
 
 @riverpod
 Future<CurrentWeatherResponse> fetchCurrentWeather(
   FetchCurrentWeatherRef ref, {
-  double? lat,
-  double? lon,
+  required double lat,
+  required double lon,
 }) {
   final openWeatherRepository = ref.watch(openWeatherRepositoryProvider);
   final temperature = ref.watch(getAppTemperatureProvider);
@@ -151,8 +151,8 @@ Future<CurrentWeatherResponse> fetchCurrentWeather(
 @riverpod
 Future<List<ForecastItemResponse>> fetchForecast(
   FetchForecastRef ref, {
-  double? lat,
-  double? lon,
+  required double lat,
+  required double lon,
 }) {
   final openWeatherRepository = ref.watch(openWeatherRepositoryProvider);
   final temperature = ref.watch(getAppTemperatureProvider);

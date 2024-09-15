@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/models/enum/app_temperature.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
-import 'package:my_weather/presentation/settings/temperature/providers/temperature_controller.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class TemperaturePage extends ConsumerStatefulWidget {
@@ -68,9 +67,8 @@ class _TemperaturePageState extends ConsumerState<TemperaturePage> {
   }
 
   void _onSelectTemperature(AppTemperature temperature) {
-    ref
-        .read(temperatureControllerProvider.notifier)
-        .onSelectTemperature(temperature);
+    ref.read(setAppTemperatureProvider(temperature));
+    ref.invalidate(getAppTemperatureProvider);
     context.pop();
   }
 }
