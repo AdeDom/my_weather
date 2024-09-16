@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:my_weather/generated/assets.gen.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class AppErrorWidget extends StatelessWidget {
@@ -21,7 +22,7 @@ class AppErrorWidget extends StatelessWidget {
           SizedBox(
             width: size,
             height: size,
-            child: Lottie.asset('assets/lottie/error_lottie.json'),
+            child: Lottie.asset(Assets.lottie.errorLottie),
           ),
           if (message != null) ...[
             Text(

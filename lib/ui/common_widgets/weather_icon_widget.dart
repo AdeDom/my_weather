@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/models/enum/app_weather.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
+import 'package:my_weather/generated/assets.gen.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class WeatherIconWidget extends ConsumerStatefulWidget {
@@ -35,20 +36,19 @@ class _WeatherIconWidgetState extends ConsumerState<WeatherIconWidget> {
 
   String? _getAssetImage() {
     final isDarkMode = ref.watch(isDarkModeProvider);
-    const resource = 'assets/images/';
     switch (widget.weather) {
       case AppWeather.rain:
         return isDarkMode
-            ? '${resource}ic_rainy_dark.png'
-            : '${resource}ic_rainy_light.png';
+            ? Assets.images.icRainyDark.path
+            : Assets.images.icRainyLight.path;
       case AppWeather.snow:
         return isDarkMode
-            ? '${resource}ic_snowy_dark.png'
-            : '${resource}ic_snowy_light.png';
+            ? Assets.images.icSnowyDark.path
+            : Assets.images.icSnowyLight.path;
       case AppWeather.clouds:
         return isDarkMode
-            ? '${resource}ic_cloudy_dark.png'
-            : '${resource}ic_cloudy_light.png';
+            ? Assets.images.icCloudyDark.path
+            : Assets.images.icCloudyLight.path;
       case AppWeather.unknown:
         return null;
       case null:

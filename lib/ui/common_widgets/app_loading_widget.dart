@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:my_weather/generated/assets.gen.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class AppLoadingWidget extends StatelessWidget {
@@ -16,7 +17,7 @@ class AppLoadingWidget extends StatelessWidget {
       child: SizedBox(
         width: size,
         height: size,
-        child: Lottie.asset('assets/lottie/loading_lottie.json'),
+        child: Lottie.asset(Assets.lottie.loadingLottie),
       ),
     );
   }

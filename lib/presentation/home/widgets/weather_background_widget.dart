@@ -5,6 +5,7 @@ import 'package:my_weather/data/models/enum/app_weather.dart';
 import 'package:my_weather/data/models/response/current_weather/current_weather_response.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
+import 'package:my_weather/generated/assets.gen.dart';
 import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
@@ -64,20 +65,19 @@ class _WeatherBackgroundWidgetState
   String? _getAssetImage(CurrentWeatherResponse data) {
     final weatherFirst = data.weather?.firstOrNull;
     final isDarkMode = ref.watch(isDarkModeProvider);
-    const resource = 'assets/images/';
     switch (weatherFirst?.main) {
       case AppWeather.rain:
         return isDarkMode
-            ? '${resource}img_rainy_dark.png'
-            : '${resource}img_rainy_light.png';
+            ? Assets.images.imgRainyDark.path
+            : Assets.images.imgRainyLight.path;
       case AppWeather.snow:
         return isDarkMode
-            ? '${resource}img_snowy_dark.png'
-            : '${resource}img_snowy_light.png';
+            ? Assets.images.imgSnowyDark.path
+            : Assets.images.imgSnowyLight.path;
       case AppWeather.clouds:
         return isDarkMode
-            ? '${resource}img_cloudy_dark.png'
-            : '${resource}img_cloudy_light.png';
+            ? Assets.images.imgCloudyDark.path
+            : Assets.images.imgCloudyLight.path;
       case AppWeather.unknown:
         return null;
       case null:
