@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/models/entity/geographical_coordinates/geographical_coordinates_entity.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/presentation/forecast/models/forecast_argument.dart';
 import 'package:my_weather/presentation/home/widgets/current_weather_widget.dart';
 import 'package:my_weather/presentation/home/widgets/home_forecast_widget.dart';
@@ -43,7 +45,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     return TextButton(
       onPressed: _onOpenForecast,
       child: Text(
-        'See more',
+        LocaleKeys.home_see_more.tr(),
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
               decoration: TextDecoration.underline,
             ),

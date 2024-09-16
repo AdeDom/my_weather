@@ -1,11 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/presentation/settings/settings/widgets/settings_about_weather_widget.dart';
+import 'package:my_weather/presentation/settings/settings/widgets/settings_language_widget.dart';
+import 'package:my_weather/presentation/settings/settings/widgets/settings_temperature_widget.dart';
 import 'package:my_weather/presentation/settings/settings/widgets/settings_theme_widget.dart';
-import 'package:my_weather/presentation/settings/settings/widgets/settings_units_widget.dart';
-import 'package:my_weather/presentation/settings/temperature/temperature_page.dart';
 import 'package:my_weather/router/enum/app_router_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -21,13 +23,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Settings'),
+        title: Text(LocaleKeys.settings_settings.tr()),
       ),
       body: Column(
         children: [
-          SettingsThemeWidget(onChangeTheme: _onChangeTheme),
-          SettingsUnitsWidget(
-            onShowTemperatureBottomSheet: _onShowTemperatureBottomSheet,
+          SettingsThemeWidget(
+            isDarkMode: ref.watch(isDarkModeProvider),
+            onChangeTheme: _onChangeTheme,
+          ),
+          const SettingsLanguageWidget(),
+          SettingsTemperatureWidget(
+            temperature: ref.watch(getAppTemperatureProvider),
           ),
           SettingsAboutWeatherWidget(onOpenAboutWeather: _onOpenAboutWeather),
         ],
@@ -38,13 +44,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   void _onChangeTheme(bool value) {
     ref.read(setDarkModeProvider(value));
     ref.invalidate(isDarkModeProvider);
-  }
-
-  void _onShowTemperatureBottomSheet() {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => const TemperaturePage(),
-    );
   }
 
   void _onOpenAboutWeather() {

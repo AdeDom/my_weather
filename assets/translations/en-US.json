@@ -1,0 +1,55 @@
+{
+  "about_weather": {
+    "about_weather": "About Weather"
+  },
+  "city_landing": {
+    "all_selected": "All selected",
+    "delete": "Delete",
+    "deselect_all": "Deselect all",
+    "manage_cities": "Manage cities",
+    "select_all": "Select all",
+    "select_items": "Select items",
+    "selected": "{} Selected"
+  },
+  "common": {
+    "app_name": "My Weather",
+    "cancel": "Cancel",
+    "data_not_found": "Data not found",
+    "english": "English",
+    "something_went_wrong": "Something went wrong",
+    "temp_min_max": "{}°/{}°",
+    "temp": "{}°",
+    "thai": "Thai"
+  },
+  "company": {
+    "address": "89 AIA Capital Center, Floor 25th, Ratchadapisek Road, Din Daeng, Bangkok 10400",
+    "name": "MUZE INNOVATION COMPANY LIMITED"
+  },
+  "forecast": {
+    "forecast": "Forecast"
+  },
+  "geographical_coordinates": {
+    "add_city": "Add city",
+    "name_state": "{}, {}",
+    "please_enter_search": "Please enter search",
+    "search": "Search"
+  },
+  "home": {
+    "humidity": "Humidity {}",
+    "see_more": "See more"
+  },
+  "language": {
+    "language": "Language"
+  },
+  "settings": {
+    "settings": "Settings"
+  },
+  "temperature": {
+    "celsius": "Celsius (°C)",
+    "fahrenheit": "Fahrenheit (°F)",
+    "temperature": "Temperature"
+  },
+  "theme": {
+    "theme_mode": "Theme mode"
+  }
+}

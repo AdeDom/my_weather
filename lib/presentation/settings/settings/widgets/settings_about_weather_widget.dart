@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class SettingsAboutWeatherWidget extends StatelessWidget {
@@ -24,7 +26,7 @@ class SettingsAboutWeatherWidget extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'About Weather',
+                      LocaleKeys.about_weather_about_weather.tr(),
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const Spacer(),

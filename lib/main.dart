@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/data_source/local/providers/database_providers.dart';
 import 'package:my_weather/data/data_source/local/providers/shared_preferences_provider.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
+import 'package:my_weather/generated/codegen_loader.g.dart';
 import 'package:my_weather/ui/common_widgets/loading_screen.dart';
 import 'package:my_weather/ui/theme/theme.dart';
 import 'package:my_weather/ui/theme/util.dart';
@@ -16,8 +18,11 @@ import 'router/providers/app_router_provider.dart';
 Future<void> main() async {
   runApp(const LoadingScreen());
 
-  // sqlite
+  // localize
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
+  // sqlite
   final database = await openDatabase(
     join(await getDatabasesPath(), AppConstant.databaseName),
     version: 1,
@@ -30,12 +35,19 @@ Future<void> main() async {
   final sharedPreferences = await SharedPreferences.getInstance();
 
   return runApp(
-    ProviderScope(
-      overrides: [
-        databaseProvider.overrideWithValue(database),
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-      ],
-      child: const MainApp(),
+    EasyLocalization(
+      supportedLocales: AppConstant.locales,
+      path: AppConstant.path,
+      fallbackLocale: AppConstant.thaiLocale,
+      startLocale: AppConstant.thaiLocale,
+      assetLoader: const CodegenLoader(),
+      child: ProviderScope(
+        overrides: [
+          databaseProvider.overrideWithValue(database),
+          sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+        ],
+        child: const MainApp(),
+      ),
     ),
   );
 }
@@ -59,6 +71,9 @@ class _MainAppState extends ConsumerState<MainApp> {
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       title: 'My Weather',
       theme: ref.watch(isDarkModeProvider) ? theme.dark() : theme.light(),
       routerConfig: ref.watch(appRouterProvider),

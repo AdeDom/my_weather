@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class AppEmptyWidget extends StatelessWidget {
@@ -17,7 +19,7 @@ class AppEmptyWidget extends StatelessWidget {
             child: Lottie.asset('assets/lottie/empty_lottie.json'),
           ),
           Text(
-            'Empty',
+            LocaleKeys.common_data_not_found.tr(),
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ],

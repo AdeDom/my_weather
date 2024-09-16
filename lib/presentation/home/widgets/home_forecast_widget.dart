@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/models/response/forecast/forecast_response.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
@@ -29,7 +31,9 @@ class _HomeForecastWidgetState extends ConsumerState<HomeForecastWidget> {
     final lon = widget.lon;
 
     if (lat == null || lon == null) {
-      return const AppErrorWidget(message: 'Something went wrong');
+      return AppErrorWidget(
+        message: LocaleKeys.common_something_went_wrong.tr(),
+      );
     }
 
     final result = ref.watch(fetchForecastProvider(lat: lat, lon: lon));
@@ -80,7 +84,9 @@ class _HomeForecastWidgetState extends ConsumerState<HomeForecastWidget> {
               color: Theme.of(context).colorScheme.primary,
             ),
             Text(
-              '${forecast.main?.temp?.toInt()}°',
+              LocaleKeys.common_temp.tr(
+                args: [forecast.main?.temp?.toInt().toString() ?? ''],
+              ),
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),

@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/models/enum/app_weather.dart';
 import 'package:my_weather/data/models/response/current_weather/current_weather_response.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 
@@ -29,7 +31,9 @@ class _WeatherBackgroundWidgetState
     final lon = widget.lon;
 
     if (lat == null || lon == null) {
-      return const AppErrorWidget(message: 'Something went wrong');
+      return AppErrorWidget(
+        message: LocaleKeys.common_something_went_wrong.tr(),
+      );
     }
 
     final result = ref.watch(fetchCurrentWeatherProvider(lat: lat, lon: lon));

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/models/response/forecast/forecast_response.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/presentation/forecast/models/forecast_argument.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
@@ -29,7 +31,7 @@ class _ForecastScreenState extends ConsumerState<ForecastScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Forecast'),
+        title: Text(LocaleKeys.forecast_forecast.tr()),
       ),
       body: _buildListViewWidget(),
     );
@@ -40,7 +42,9 @@ class _ForecastScreenState extends ConsumerState<ForecastScreen> {
     final lon = widget.args.lon;
 
     if (lat == null || lon == null) {
-      return const AppErrorWidget(message: 'Something went wrong');
+      return AppErrorWidget(
+        message: LocaleKeys.common_something_went_wrong.tr(),
+      );
     }
 
     final result = ref.watch(fetchForecastProvider(lat: lat, lon: lon));
@@ -65,8 +69,8 @@ class _ForecastScreenState extends ConsumerState<ForecastScreen> {
 
   Widget _buildForecastItemWidget(ForecastItemResponse forecast) {
     final weatherFirst = forecast.weather?.firstOrNull;
-    final tempMin = forecast.main?.tempMin?.temperature;
-    final tempMax = forecast.main?.tempMax?.temperature;
+    final tempMin = forecast.main?.tempMin?.temperature ?? '';
+    final tempMax = forecast.main?.tempMax?.temperature ?? '';
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(Sizes.p8),
@@ -92,12 +96,14 @@ class _ForecastScreenState extends ConsumerState<ForecastScreen> {
             ),
             const Spacer(),
             Text(
-              '${forecast.main?.temp?.toInt()}°',
+              LocaleKeys.common_temp.tr(
+                args: [forecast.main?.temp?.toInt().toString() ?? ''],
+              ),
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             const SizedBox(width: Sizes.p16),
             Text(
-              '$tempMin°/$tempMax°',
+              LocaleKeys.common_temp_min_max.tr(args: [tempMin, tempMax]),
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ],

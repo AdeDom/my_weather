@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
 
 class CityLandingActionWidget extends StatelessWidget {
@@ -28,7 +30,7 @@ class CityLandingActionWidget extends StatelessWidget {
             children: [
               const Icon(Icons.delete),
               Text(
-                'Delete',
+                LocaleKeys.city_landing_delete.tr(),
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ],

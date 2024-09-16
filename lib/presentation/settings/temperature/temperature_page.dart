@@ -1,9 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/models/enum/app_temperature.dart';
 import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
+import 'package:my_weather/ui/common_widgets/bottom_sheet_item_widget.dart';
 
 class TemperaturePage extends ConsumerStatefulWidget {
   const TemperaturePage({super.key});
@@ -23,44 +26,17 @@ class _TemperaturePageState extends ConsumerState<TemperaturePage> {
       padding: const EdgeInsets.all(Sizes.p32),
       child: Column(
         children: [
-          _buildTemperatureItemWidget(
-            'Celsius (°C)',
-            isTemperatureCelsius,
+          BottomSheetItemWidget(
+            title: LocaleKeys.temperature_celsius.tr(),
+            isCheck: isTemperatureCelsius,
             onTap: () => _onSelectTemperature(AppTemperature.celsius),
           ),
           const Divider(),
-          _buildTemperatureItemWidget(
-            'Fahrenheit (°F)',
-            isTemperatureFahrenheit,
+          BottomSheetItemWidget(
+            title: LocaleKeys.temperature_fahrenheit.tr(),
+            isCheck: isTemperatureFahrenheit,
             onTap: () => _onSelectTemperature(AppTemperature.fahrenheit),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTemperatureItemWidget(
-    String title,
-    bool isCheck, {
-    Function()? onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: isCheck ? Theme.of(context).colorScheme.primary : null,
-                ),
-          ),
-          const Spacer(),
-          if (isCheck) ...[
-            Icon(
-              Icons.check,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ],
         ],
       ),
     );

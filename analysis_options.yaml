@@ -8,5 +8,8 @@ analyzer:
 
 linter:
   rules:
+    - comment_references
+    - directives_ordering
+    - lines_longer_than_80_chars
     - prefer_single_quotes
     - require_trailing_commas

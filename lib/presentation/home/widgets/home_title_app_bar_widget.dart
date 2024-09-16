@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 
 class HomeTitleAppBarWidget extends ConsumerWidget {
   const HomeTitleAppBarWidget({
@@ -17,7 +19,9 @@ class HomeTitleAppBarWidget extends ConsumerWidget {
     return result.when(
       data: (data) {
         return Text(
-          data.isEmpty ? 'My Weather' : data[pageViewIndex].name,
+          data.isEmpty
+              ? LocaleKeys.common_app_name.tr()
+              : data[pageViewIndex].name,
           style: Theme.of(context).textTheme.headlineMedium,
         );
       },
@@ -28,7 +32,7 @@ class HomeTitleAppBarWidget extends ConsumerWidget {
 
   Text _buildDefaultTitleWidget(BuildContext context) {
     return Text(
-      'My Weather',
+      LocaleKeys.common_app_name.tr(),
       style: Theme.of(context).textTheme.headlineMedium,
     );
   }

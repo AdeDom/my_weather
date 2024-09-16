@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/models/response/geographical_coordinates/geographical_coordinates_response.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_action_widget.dart';
 import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_checked_all_widget.dart';
 import 'package:my_weather/presentation/city/city_landing/widgets/city_landing_list_view_widget.dart';
@@ -45,7 +47,7 @@ class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         leading: TextButton(
           onPressed: _onCancelAction,
-          child: const Text('Cancel'),
+          child: Text(LocaleKeys.common_cancel.tr()),
         ),
         leadingWidth: Sizes.p80,
         title: CityLandingTitleAppBarWidget(selectIds: _selectIds),
@@ -60,7 +62,7 @@ class _CityLandingScreenState extends ConsumerState<CityLandingScreen> {
     } else {
       return AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Manage cities'),
+        title: Text(LocaleKeys.city_landing_manage_cities.tr()),
         actions: [
           IconButton(
             onPressed: _onChangeAction,

@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/models/response/geographical_coordinates/geographical_coordinates_response.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/presentation/city/geographical_coordinates/providers/geographical_coordinates_page_controller.dart';
 import 'package:my_weather/ui/common_widgets/app_empty_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
@@ -45,7 +47,9 @@ class GeographicalCoordinatesListWidget extends ConsumerWidget {
                 child: GestureDetector(
                   onTap: () => onSelected(item),
                   child: Text(
-                    '${item.name}, ${item.state}',
+                    LocaleKeys.geographical_coordinates_name_state.tr(
+                      args: [item.name.toString(), item.state.toString()],
+                    ),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),

@@ -1,0 +1,55 @@
+{
+  "about_weather": {
+    "about_weather": "เกี่ยวกับสภาพอากาศ"
+  },
+  "city_landing": {
+    "all_selected": "เลือกทั้งหมด",
+    "delete": "ลบ",
+    "deselect_all": "ยกเลิกการเลือกทั้งหมด",
+    "manage_cities": "จัดการเมือง",
+    "select_all": "เลือกทั้งหมด",
+    "select_items": "เลือกรายการ",
+    "selected": "{} เลือกแล้ว"
+  },
+  "common": {
+    "app_name": "My Weather",
+    "cancel": "ยกเลิก",
+    "data_not_found": "ไม่พบข้อมูล",
+    "english": "อังกฤษ",
+    "something_went_wrong": "เกิดข้อผิดพลาดบางอย่าง",
+    "temp_min_max": "{}°/{}°",
+    "temp": "{}°",
+    "thai": "ไทย"
+  },
+  "company": {
+    "address": "89 อาคารเอไอเอ แคปปิตอล เซ็นเตอร์ ห้องเลขที่ 2501-2503 ชั้นที่ 25 ถนนรัชดาภิเษก แขวงดินแดง เขตดินแดง กรุงเทพมหานคร 10400",
+    "name": "บริษัท มิวซ์ อินโนเวชั่น จำกัด"
+  },
+  "forecast": {
+    "forecast": "พยากรณ์"
+  },
+  "geographical_coordinates": {
+    "add_city": "เพิ่มเมือง",
+    "name_state": "{}, {}",
+    "please_enter_search": "กรุณากรอกชื่อเมือง",
+    "search": "ค้นหา"
+  },
+  "home": {
+    "humidity": "ความชื้น {}",
+    "see_more": "ดูเพิ่มเติม"
+  },
+  "language": {
+    "language": "ภาษา"
+  },
+  "settings": {
+    "settings": "การตั้งค่า"
+  },
+  "temperature": {
+    "celsius": "เซลเซียส (°C)",
+    "fahrenheit": "ฟาเรนไฮต์ (°F)",
+    "temperature": "อุณหภูมิ"
+  },
+  "theme": {
+    "theme_mode": "โหมดธีม"
+  }
+}

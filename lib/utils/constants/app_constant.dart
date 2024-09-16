@@ -1,4 +1,15 @@
+import 'package:flutter/material.dart';
+
 class AppConstant {
+  /// Localize
+  static const englishLocale = Locale('en', 'US');
+  static const thaiLocale = Locale('th', 'TH');
+  static const locales = [
+    englishLocale,
+    thaiLocale,
+  ];
+  static const path = 'assets/translations';
+
   /// Key
   static const appIdApiKey = 'appid';
 

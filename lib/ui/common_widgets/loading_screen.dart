@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/ui/theme/theme.dart';
 import 'package:my_weather/ui/theme/util.dart';
 
@@ -16,7 +18,7 @@ class LoadingScreen extends StatelessWidget {
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'My Weather',
+      title: LocaleKeys.common_app_name.tr(),
       theme: theme.light(),
       home: const Scaffold(
         body: Center(

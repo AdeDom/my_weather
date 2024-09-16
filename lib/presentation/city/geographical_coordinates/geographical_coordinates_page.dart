@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_weather/data/models/response/geographical_coordinates/geographical_coordinates_response.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/presentation/city/geographical_coordinates/providers/geographical_coordinates_page_controller.dart';
 import 'package:my_weather/presentation/city/geographical_coordinates/widgets/geographical_coordinates_list_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
@@ -31,10 +33,10 @@ class _GeographicalCoordinatesPageState
       appBar: AppBar(
         leading: TextButton(
           onPressed: context.pop,
-          child: const Text('Cancel'),
+          child: Text(LocaleKeys.common_cancel.tr()),
         ),
         leadingWidth: Sizes.p80,
-        title: const Text('Add city'),
+        title: Text(LocaleKeys.geographical_coordinates_add_city.tr()),
         centerTitle: true,
       ),
       body: Column(
@@ -68,13 +70,15 @@ class _GeographicalCoordinatesPageState
                 Radius.circular(Sizes.p32),
               ),
             ),
-            hintText: 'Search',
+            hintText: LocaleKeys.geographical_coordinates_search.tr(),
             enabled: !result.isLoading,
           ),
           textInputAction: TextInputAction.search,
           onEditingComplete: _searchEditingComplete,
           validator: (search) {
-            return search?.isEmpty == true ? 'Please enter search' : null;
+            return search?.isEmpty == true
+                ? LocaleKeys.geographical_coordinates_please_enter_search.tr()
+                : null;
           },
         ),
       ),

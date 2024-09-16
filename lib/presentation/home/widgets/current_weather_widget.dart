@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_weather/data/models/response/current_weather/current_weather_response.dart';
 import 'package:my_weather/data/repositories/open_weather/open_weather_repository.dart';
+import 'package:my_weather/generated/locale_keys.g.dart';
 import 'package:my_weather/ui/common_widgets/app_error_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_loading_widget.dart';
 import 'package:my_weather/ui/common_widgets/app_sizes.dart';
@@ -29,7 +31,9 @@ class _CurrentWeatherWidgetState extends ConsumerState<CurrentWeatherWidget> {
     final lon = widget.lon;
 
     if (lat == null || lon == null) {
-      return const AppErrorWidget(message: 'Something went wrong');
+      return AppErrorWidget(
+        message: LocaleKeys.common_something_went_wrong.tr(),
+      );
     }
 
     final result = ref.watch(fetchCurrentWeatherProvider(lat: lat, lon: lon));
@@ -44,11 +48,10 @@ class _CurrentWeatherWidgetState extends ConsumerState<CurrentWeatherWidget> {
   Padding _buildCurrentWeatherWidget(CurrentWeatherResponse data) {
     final width = MediaQuery.sizeOf(context).width;
     final weatherFirst = data.weather?.firstOrNull;
-    final temp = data.main?.temp?.toInt();
-    final tempMin = data.main?.tempMin?.temperature;
-    final tempMax = data.main?.tempMax?.temperature;
-    final tempMinMax = '$tempMin°/$tempMax°';
-    final humidity = data.main?.humidity;
+    final temp = data.main?.temp?.toInt().toString() ?? '';
+    final tempMin = data.main?.tempMin?.temperature ?? '';
+    final tempMax = data.main?.tempMax?.temperature ?? '';
+    final humidity = data.main?.humidity.toString() ?? '';
     return Padding(
       padding: const EdgeInsets.only(
         left: Sizes.p16,
@@ -69,7 +72,7 @@ class _CurrentWeatherWidgetState extends ConsumerState<CurrentWeatherWidget> {
                     WeatherIconWidget(weather: weatherFirst?.main),
                     const SizedBox(width: Sizes.p16),
                     Text(
-                      '$temp°',
+                      LocaleKeys.common_temp.tr(args: [temp]),
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -81,9 +84,13 @@ class _CurrentWeatherWidgetState extends ConsumerState<CurrentWeatherWidget> {
                 const SizedBox(height: Sizes.p16),
                 _buildTextWidget(weatherFirst?.description),
                 const SizedBox(height: Sizes.p16),
-                _buildTextWidget(tempMinMax),
+                _buildTextWidget(
+                  LocaleKeys.common_temp_min_max.tr(args: [tempMin, tempMax]),
+                ),
                 const SizedBox(height: Sizes.p16),
-                _buildTextWidget('Humidity $humidity'),
+                _buildTextWidget(
+                  LocaleKeys.home_humidity.tr(args: [humidity]),
+                ),
               ],
             ),
           ),
