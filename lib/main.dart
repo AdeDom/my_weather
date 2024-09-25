@@ -1,19 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_weather/data/data_source/local/providers/database_providers.dart';
-import 'package:my_weather/data/data_source/local/providers/shared_preferences_provider.dart';
-import 'package:my_weather/data/repositories/app_settings/app_settings_repository.dart';
 import 'package:my_weather/generated/codegen_loader.g.dart';
-import 'package:my_weather/ui/common_widgets/loading_screen.dart';
-import 'package:my_weather/ui/theme/theme.dart';
-import 'package:my_weather/ui/theme/util.dart';
-import 'package:my_weather/utils/constants/app_constant.dart';
+import 'package:my_weather/src/data/data_source/local/constants/database_constant.dart';
+import 'package:my_weather/src/data/data_source/local/providers/database_providers.dart';
+import 'package:my_weather/src/data/data_source/local/providers/shared_preferences_provider.dart';
+import 'package:my_weather/src/data/repositories/app_settings/app_settings_repository.dart';
+import 'package:my_weather/src/presentation/settings/language/constants/locale_constant.dart';
+import 'package:my_weather/src/router/providers/app_router_provider.dart';
+import 'package:my_weather/src/ui/common_widgets/loading_screen.dart';
+import 'package:my_weather/src/ui/theme/theme.dart';
+import 'package:my_weather/src/ui/theme/typography/text_theme_util.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-
-import 'router/providers/app_router_provider.dart';
 
 Future<void> main() async {
   runApp(const LoadingScreen());
@@ -24,10 +24,10 @@ Future<void> main() async {
 
   // sqlite
   final database = await openDatabase(
-    join(await getDatabasesPath(), AppConstant.databaseName),
+    join(await getDatabasesPath(), DatabaseConstant.databaseName),
     version: 1,
     onCreate: (db, version) {
-      return db.execute(AppConstant.createTable);
+      return db.execute(DatabaseConstant.createTable);
     },
   );
 
@@ -36,10 +36,10 @@ Future<void> main() async {
 
   return runApp(
     EasyLocalization(
-      supportedLocales: AppConstant.locales,
-      path: AppConstant.path,
-      fallbackLocale: AppConstant.thaiLocale,
-      startLocale: AppConstant.thaiLocale,
+      supportedLocales: LocaleConstant.locales,
+      path: LocaleConstant.path,
+      fallbackLocale: LocaleConstant.thaiLocale,
+      startLocale: LocaleConstant.thaiLocale,
       assetLoader: const CodegenLoader(),
       child: ProviderScope(
         overrides: [
